@@ -676,21 +676,10 @@
       </div>
       <div class="thr-divider"></div>
       <div class="threshold-group">
-        <span class="threshold-label">Vertical</span>
-        <div class="ins-vertical-wrap" id="ins-vertical-wrap">
-          <button class="ins-vertical-trigger" id="ins-vertical-trigger" onclick="insVerticalToggle(event)">
-            <span id="ins-vertical-label">All verticals</span>
-            <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          </button>
-          <div class="ins-vertical-popover" id="ins-vertical-popover">
-            <label class="ins-vertical-opt"><input type="checkbox" value="all" checked onchange="insVerticalAll(this)"><span>All verticals</span></label>
-            <label class="ins-vertical-opt"><input type="checkbox" value="Home Services" onchange="insVerticalChange()"><span>Home Services</span></label>
-            <label class="ins-vertical-opt"><input type="checkbox" value="Insurance" onchange="insVerticalChange()"><span>Insurance</span></label>
-            <label class="ins-vertical-opt"><input type="checkbox" value="Legal" onchange="insVerticalChange()"><span>Legal</span></label>
-            <label class="ins-vertical-opt"><input type="checkbox" value="Financial" onchange="insVerticalChange()"><span>Financial</span></label>
-            <label class="ins-vertical-opt"><input type="checkbox" value="Other" onchange="insVerticalChange()"><span>Other</span></label>
-          </div>
-        </div>
+        <span class="threshold-label">Manager</span>
+        <select class="sort-select" id="ins-manager-filter" style="min-width:160px" onchange="insManagerChange()">
+          <option value="">All managers</option>
+        </select>
       </div>
       <button class="run-btn" id="run-btn" onclick="runInsights()">Run analysis</button>
     </div>
@@ -903,9 +892,24 @@
               <textarea class="tpl-field-textarea" id="tpl-f-intro" rows="4" placeholder="e.g. Hi {{first_name}}, here's your weekly performance summary for your AI-routed accounts…"></textarea>
             </div>
 
-            <!-- Data fields -->
+            <!-- Layout style -->
             <div class="tpl-field-group">
-              <label class="tpl-field-label">Data fields to include in account rows</label>
+              <label class="tpl-field-label">Email layout</label>
+              <div class="tpl-fields-grid" style="grid-template-columns:1fr 1fr">
+                <label class="tpl-check-opt" style="align-items:flex-start;flex-direction:column;gap:3px;padding:10px 12px">
+                  <span style="display:flex;align-items:center;gap:7px"><input type="radio" name="tpl-layout" value="compact" id="tpl-layout-compact" checked><strong style="font-size:12px">Compact summary</strong></span>
+                  <span style="font-size:10px;color:var(--text-3);font-weight:400;padding-left:20px">Grouped up/down lists + link to full detail. Best for managers with many accounts.</span>
+                </label>
+                <label class="tpl-check-opt" style="align-items:flex-start;flex-direction:column;gap:3px;padding:10px 12px">
+                  <span style="display:flex;align-items:center;gap:7px"><input type="radio" name="tpl-layout" value="full" id="tpl-layout-full"><strong style="font-size:12px">Full funnel</strong></span>
+                  <span style="font-size:10px;color:var(--text-3);font-weight:400;padding-left:20px">Complete publisher → agent → advertiser breakdown per account. Long emails.</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Data fields (only applies to full funnel layout) -->
+            <div class="tpl-field-group" id="tpl-datafields-group">
+              <label class="tpl-field-label">Data fields <span class="tpl-hint">applies to Full funnel layout only</span></label>
               <div class="tpl-fields-grid">
                 <label class="tpl-check-opt"><input type="checkbox" id="tpl-f-rev" checked><span>Revenue (prev → curr)</span></label>
                 <label class="tpl-check-opt"><input type="checkbox" id="tpl-f-rev-delta" checked><span>Revenue change $</span></label>
@@ -919,12 +923,12 @@
             <!-- Positive section header -->
             <div class="tpl-field-row">
               <div class="tpl-field-group">
-                <label class="tpl-field-label">Positive movement section header</label>
-                <input class="tpl-field-input" type="text" id="tpl-f-pos-header" placeholder="e.g. 📈 Positive movement">
+                <label class="tpl-field-label">Movers up section header</label>
+                <input class="tpl-field-input" type="text" id="tpl-f-pos-header" placeholder="e.g. 📈 Movers up">
               </div>
               <div class="tpl-field-group">
-                <label class="tpl-field-label">Needs attention section header</label>
-                <input class="tpl-field-input" type="text" id="tpl-f-neg-header" placeholder="e.g. 📉 Needs attention">
+                <label class="tpl-field-label">Movers down section header</label>
+                <input class="tpl-field-input" type="text" id="tpl-f-neg-header" placeholder="e.g. 📉 Movers down">
               </div>
             </div>
 
@@ -1172,8 +1176,6 @@ function buildVerticalOptions(allCb, changeFn) {
   return html;
 }
 function populateVerticalDropdowns() {
-  const insPop = document.getElementById('ins-vertical-popover');
-  if (insPop) insPop.innerHTML = buildVerticalOptions('insVerticalAll','insVerticalChange');
   const crPop = document.getElementById('cr-vertical-popover');
   if (crPop) crPop.innerHTML = buildVerticalOptions('crVerticalAll','crVerticalChange');
 }
@@ -1205,8 +1207,6 @@ document.addEventListener('click', e => {
     const anc = p.closest('.ins-drp-anchor');
     if (anc && !anc.contains(e.target)) p.classList.remove('open');
   });
-  const vwrap = document.getElementById('ins-vertical-wrap');
-  if (vwrap && !vwrap.contains(e.target)) document.getElementById('ins-vertical-popover')?.classList.remove('open');
   const crVWrap = document.getElementById('cr-vertical-wrap');
   if (crVWrap && !crVWrap.contains(e.target)) document.getElementById('cr-vertical-popover')?.classList.remove('open');
   const crDWrap = document.getElementById('cr-drp-wrap');
@@ -1323,7 +1323,6 @@ const insDrpState = {
   b:{year:0,month:0,pickStart:null,pickEnd:null,selecting:false}
 };
 let insLastResults = null;
-let insVerticalFilter = [];
 const insSortState = { pub:{col:'dRev',dir:-1}, adv:{col:'dRev',dir:-1}, agent:{col:'dRev',dir:-1} };
 
 function insDrpToggle(side, e) {
@@ -1377,32 +1376,28 @@ function insDrpRender(side) {
 function insDrpClickDay(side, iso) { const s=insDrpState[side]; if(!s.pickStart||!s.selecting){s.pickStart=iso;s.pickEnd=null;s.selecting=true;}else{if(iso<s.pickStart){s.pickEnd=s.pickStart;s.pickStart=iso;}else s.pickEnd=iso;s.selecting=false;}insDrpRender(side); }
 function insDrpApply(side) { const s=insDrpState[side]; if(!s.pickStart||!s.pickEnd)return; insPeriods[side]={start:s.pickStart,end:s.pickEnd}; const lbl=document.getElementById('ins-drp-'+side+'-label'); if(lbl)lbl.textContent=fmtShortD(s.pickStart)+' – '+fmtShortD(s.pickEnd); document.getElementById('ins-drp-'+side+'-pop').classList.remove('open'); }
 
-// ─── INSIGHTS VERTICAL FILTER ─────────────────────────────────────────────────
-function insVerticalToggle(e) {
-  e.stopPropagation();
-  document.getElementById('ins-vertical-popover').classList.toggle('open');
+// ─── INSIGHTS MANAGER FILTER ──────────────────────────────────────────────────
+let insManagerFilter = ''; // manager id, '' = all
+
+function insPopulateManagerDropdown() {
+  const sel = document.getElementById('ins-manager-filter');
+  if (!sel) return;
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">All managers</option>' +
+    (teamManagers||[]).map(m => `<option value="${m.id}">${m.manager_name}</option>`).join('');
+  sel.value = cur;
 }
-function insVerticalAll(cb) {
-  const popover = document.getElementById('ins-vertical-popover');
-  popover.querySelectorAll('input[type=checkbox]').forEach(c => c.checked = cb.checked);
-  insVerticalUpdateLabel();
+function insManagerChange() {
+  insManagerFilter = document.getElementById('ins-manager-filter').value;
+  // Re-render from cached results if available
+  if (insLastResults) insRenderResults(insLastResults);
 }
-function insVerticalChange() {
-  const popover = document.getElementById('ins-vertical-popover');
-  const allCb = popover.querySelector('input[value="all"]');
-  const specificCbs = [...popover.querySelectorAll('input[type=checkbox]:not([value="all"])')];
-  allCb.checked = specificCbs.every(c => c.checked);
-  insVerticalUpdateLabel();
-}
-function insVerticalUpdateLabel() {
-  const popover = document.getElementById('ins-vertical-popover');
-  const allCb = popover.querySelector('input[value="all"]');
-  const selected = [...popover.querySelectorAll('input[type=checkbox]:not([value="all"])')].filter(c => c.checked).map(c => c.value);
-  insVerticalFilter = selected;
-  const label = document.getElementById('ins-vertical-label');
-  if (allCb.checked || selected.length === 0) { label.textContent = 'All verticals'; insVerticalFilter = []; }
-  else if (selected.length === 1) label.textContent = selected[0];
-  else label.textContent = selected.length + ' verticals';
+// Returns {advNames:Set, pubNames:Set} for the selected manager, or null if all
+function insManagerScope() {
+  if (!insManagerFilter) return null;
+  const advNames = new Set(teamAdvForMgr(insManagerFilter).map(n => n.toLowerCase()));
+  const pubNames = new Set(teamPubForMgr(insManagerFilter).map(n => n.toLowerCase()));
+  return { advNames, pubNames };
 }
 
 function toggleThr(which) {
@@ -1415,11 +1410,8 @@ function toggleThr(which) {
 async function insFetchPeriod(startISO, endISO) {
   const pubs={},advs={},agents={};
   const PAGE=1000;let offset=0;
-  const verticalQuery = insVerticalFilter.length > 0
-    ? `&or=(${insVerticalFilter.map(v=>`vertical.eq.${encodeURIComponent(v)}`).join(',')})`
-    : '';
   while(true){
-    const batch=await sbFetch(`agent_calls_raw?select=ivr_name,publisher_name,advertiser_name,ivr_duration,connect_duration,advertiser_payin,publisher_payout,result,vertical&call_date=gte.${startISO}&call_date=lte.${endISO}${verticalQuery}`,{headers:{'Range-Unit':'items','Range':`${offset}-${offset+PAGE-1}`}});
+    const batch=await sbFetch(`agent_calls_raw?select=ivr_name,publisher_name,advertiser_name,ivr_duration,connect_duration,advertiser_payin,publisher_payout,result,vertical&call_date=gte.${startISO}&call_date=lte.${endISO}`,{headers:{'Range-Unit':'items','Range':`${offset}-${offset+PAGE-1}`}});
     if(!batch||!batch.length)break;
     for(const c of batch){const s=isSent(c),p=isPaid(c),rev=c.advertiser_payin||0,margin=rev-(c.publisher_payout||0),pub=c.publisher_name||'(unknown)',adv=c.advertiser_name||'(unknown)',ag=c.ivr_name||'(unknown)';
     function acc(map,key){if(!map[key])map[key]={raw:0,sent:0,paid:0,rev:0,margin:0,byAgent:{}};const r=map[key];r.raw++;if(s)r.sent++;if(p)r.paid++;r.rev+=rev;r.margin+=margin;if(!r.byAgent[ag])r.byAgent[ag]={raw:0,paid:0,rev:0};r.byAgent[ag].raw++;if(p)r.byAgent[ag].paid++;r.byAgent[ag].rev+=rev;}
@@ -1459,9 +1451,15 @@ function runInsights(){
 }
 
 function insRenderResults({dA,dB,thrCalls,thrRevPct,thrConv,pA,pB}){
-  const pubM=insBuildMovers(dA.pubs,dB.pubs,thrCalls,thrRevPct,thrConv);
-  const advM=insBuildMovers(dA.advs,dB.advs,thrCalls,thrRevPct,thrConv);
+  let pubM=insBuildMovers(dA.pubs,dB.pubs,thrCalls,thrRevPct,thrConv);
+  let advM=insBuildMovers(dA.advs,dB.advs,thrCalls,thrRevPct,thrConv);
   const agM=insBuildMovers(dA.agents,dB.agents,thrCalls,thrRevPct,thrConv);
+  // Apply manager scope (filter pub/adv to the selected manager's assigned accounts)
+  const scope = insManagerScope();
+  if (scope) {
+    pubM = pubM.filter(r => scope.pubNames.has((r.key||'').toLowerCase()));
+    advM = advM.filter(r => scope.advNames.has((r.key||'').toLowerCase()));
+  }
   const totRevA=Object.values(dA.agents).reduce((s,r)=>s+r.rev,0),totRevB=Object.values(dB.agents).reduce((s,r)=>s+r.rev,0);
   const totMarA=Object.values(dA.agents).reduce((s,r)=>s+r.margin,0),totMarB=Object.values(dB.agents).reduce((s,r)=>s+r.margin,0);
   const totRawA=Object.values(dA.agents).reduce((s,r)=>s+r.raw,0),totRawB=Object.values(dB.agents).reduce((s,r)=>s+r.raw,0);
@@ -2612,6 +2610,13 @@ function digestFunnelRowAB(name, valA, valB, statType, highlight, forEmail, bord
   </div>`;
 }
 
+// Build the shareable filtered-view link for a manager
+function digestManagerLink(entry, days) {
+  const base = location.origin + location.pathname;
+  const d = days || (digestResults ? Math.round((new Date(digestResults.pB.end) - new Date(digestResults.pB.start)) / 86400000) + 1 : 7);
+  return `${base}#view=manager&email=${encodeURIComponent(entry.email)}&period=${d}`;
+}
+
 function digestBuildEmailBody(entry, pA, pB, tpl) {
   const allAccounts = [
     ...entry.advAccounts.map(m => ({ ...m, anchorType: 'advertiser' })),
@@ -2619,9 +2624,10 @@ function digestBuildEmailBody(entry, pA, pB, tpl) {
   ];
   const periodLabel = `${fmtShortD(pA.start)}–${fmtShortD(pA.end)} vs ${fmtShortD(pB.start)}–${fmtShortD(pB.end)}`;
   const firstName = entry.managerName.split(' ')[0];
+  const layout = tpl?.layout || 'compact'; // default to compact now
 
-  const posHeader = tpl?.pos_header || '📈 Positive movement';
-  const negHeader = tpl?.neg_header || '📉 Needs attention';
+  const posHeader = tpl?.pos_header || '📈 Movers up';
+  const negHeader = tpl?.neg_header || '📉 Movers down';
   const closing = tpl?.closing || 'This digest was generated automatically from the Buyerlink Calls AI Agent Registry. Reach out to your account manager with any questions.';
 
   function fillPlaceholders(str) {
@@ -2633,30 +2639,90 @@ function digestBuildEmailBody(entry, pA, pB, tpl) {
   }
 
   const subject = fillPlaceholders(tpl?.subject || 'Weekly AI Performance Digest — {{period}}');
-  const intro = fillPlaceholders(tpl?.intro || `Hi {{first_name}}, here's a summary of notable performance movement across your AI-routed accounts ({{period}}). {{account_count}} account${allAccounts.length!==1?'s':''} had notable movement this period.`);
+  const intro = fillPlaceholders(tpl?.intro || `Hi {{first_name}}, here's a summary of notable performance movement across your AI-routed accounts ({{period}}). {{account_count}} account${allAccounts.length!==1?'s':''} moved this period.`);
 
-  // Use digestResults data if available, otherwise empty
   const dA = digestResults?.dA || { advs:{}, pubs:{} };
   const dB = digestResults?.dB || { advs:{}, pubs:{} };
-
   const ups = allAccounts.filter(m => m.dRev >= 0);
   const downs = allAccounts.filter(m => m.dRev < 0);
+  const link = digestManagerLink(entry);
 
   let body = `<h2>${subject}</h2><div class="email-sub">Period: ${periodLabel} · Buyerlink Calls AI Agent Registry</div>`;
   body += `<div class="email-section"><div style="font-size:13px;color:#6B6760;line-height:1.7">${intro}</div></div>`;
 
-  if (ups.length) {
-    body += `<div class="email-section"><div class="email-section-title">${posHeader} (${ups.length})</div>`;
-    body += ups.map(m => digestRenderFunnelCard(m, dA, dB, true, pA, pB)).join('');
-    body += `</div>`;
+  if (layout === 'full') {
+    // ── FULL FUNNEL (legacy) ──
+    if (ups.length) {
+      body += `<div class="email-section"><div class="email-section-title">${posHeader} (${ups.length})</div>`;
+      body += ups.map(m => digestRenderFunnelCard(m, dA, dB, true, pA, pB)).join('');
+      body += `</div>`;
+    }
+    if (downs.length) {
+      body += `<div class="email-section"><div class="email-section-title">${negHeader} (${downs.length})</div>`;
+      body += downs.map(m => digestRenderFunnelCard(m, dA, dB, true, pA, pB)).join('');
+      body += `</div>`;
+    }
+  } else {
+    // ── COMPACT SUMMARY (default) ──
+    body += digestCompactGroup(posHeader, ups, '#0F6E56', '▲');
+    body += digestCompactGroup(negHeader, downs, '#993C1D', '▼');
+    // CTA button
+    body += `<div class="email-section" style="text-align:center;margin-top:24px">
+      <a href="${link}" style="display:inline-block;font-family:Arial,sans-serif;font-size:13px;font-weight:600;color:#FFFFFF;background:#1A2E4A;text-decoration:none;padding:11px 24px;border-radius:6px">View full breakdown →</a>
+      <div style="font-size:11px;color:#A09C97;margin-top:8px;font-family:Arial,sans-serif">See the complete publisher → agent → advertiser funnel for every account</div>
+    </div>`;
   }
-  if (downs.length) {
-    body += `<div class="email-section"><div class="email-section-title">${negHeader} (${downs.length})</div>`;
-    body += downs.map(m => digestRenderFunnelCard(m, dA, dB, true, pA, pB)).join('');
-    body += `</div>`;
-  }
+
   body += `<div class="email-footer">${closing}</div>`;
   return body;
+}
+
+// One compact grouped list (movers up or down) — each account shows a mini A/B/Δ metrics table
+function digestCompactGroup(header, accounts, accentColor, icon) {
+  if (!accounts.length) return '';
+
+  function metricRow(label, valA, valB, isRev) {
+    const d = (valB||0) - (valA||0);
+    const dColor = d >= 0 ? '#0F6E56' : '#993C1D';
+    const fmt = v => isRev ? insFmtRev(v||0) : (v||0).toLocaleString();
+    const fmtD = isRev ? ((d>=0?'+':'−') + insFmtRev(Math.abs(d))) : ((d>=0?'+':'') + Math.round(d).toLocaleString());
+    return `<tr>
+      <td style="font-family:Arial,sans-serif;font-size:11px;color:#6B6760;padding:2px 8px 2px 0;white-space:nowrap">${label}</td>
+      <td style="font-family:monospace;font-size:11px;color:#A09C97;text-align:right;padding:2px 8px;white-space:nowrap">${fmt(valA)}</td>
+      <td style="font-family:monospace;font-size:11px;color:#1A1816;text-align:right;padding:2px 8px;white-space:nowrap">${fmt(valB)}</td>
+      <td style="font-family:monospace;font-size:11px;color:${dColor};text-align:right;padding:2px 0;white-space:nowrap;font-weight:500">${d!==0?fmtD:'—'}</td>
+    </tr>`;
+  }
+
+  const cards = accounts.map(m => {
+    const typeLabel = m.anchorType === 'advertiser' ? 'Advertiser' : 'Publisher';
+    const revColor = m.dRev >= 0 ? '#0F6E56' : '#993C1D';
+    return `<div style="margin-bottom:14px;padding:12px 14px;background:#FFFFFF;border:1px solid #E0DDD6;border-radius:6px">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px">
+        <div style="font-family:Arial,sans-serif;font-size:13px;font-weight:600;color:#1A1816">${m.key}
+          <span style="font-size:10px;color:#A09C97;font-weight:400;text-transform:uppercase;letter-spacing:0.3px;margin-left:6px">${typeLabel}</span>
+        </div>
+        <div style="font-family:monospace;font-size:12px;color:${revColor};font-weight:600;white-space:nowrap">${icon} ${insFmtDelta(m.dRev,'$')}</div>
+      </div>
+      <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">
+        <tr>
+          <td style="width:40%"></td>
+          <td style="font-family:Arial,sans-serif;font-size:8px;font-weight:600;color:#A09C97;text-align:right;padding:0 8px 3px;text-transform:uppercase;letter-spacing:0.4px">Prev</td>
+          <td style="font-family:Arial,sans-serif;font-size:8px;font-weight:600;color:#1A1816;text-align:right;padding:0 8px 3px;text-transform:uppercase;letter-spacing:0.4px">Curr</td>
+          <td style="font-family:Arial,sans-serif;font-size:8px;font-weight:600;color:#A09C97;text-align:right;padding:0 0 3px;text-transform:uppercase;letter-spacing:0.4px">Δ</td>
+        </tr>
+        ${metricRow('Raw calls', m.a.raw, m.b.raw, false)}
+        ${metricRow('Paid calls', m.a.paid, m.b.paid, false)}
+        ${metricRow('Revenue', m.a.rev, m.b.rev, true)}
+        ${metricRow('Direct margin', m.a.margin, m.b.margin, true)}
+      </table>
+    </div>`;
+  }).join('');
+
+  return `<div style="margin-bottom:20px">
+    <div style="font-family:Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.7px;text-transform:uppercase;color:${accentColor};margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #E0DDD6">${header} (${accounts.length})</div>
+    ${cards}
+  </div>`;
 }
 
 function digestPreview(idx) {
@@ -2784,10 +2850,11 @@ let tplCurrentId = null;
 
 const TPL_DEFAULTS = {
   name: 'New template',
+  layout: 'compact',
   subject: 'Your AI call performance update — {{period}}',
-  intro: 'Hi {{first_name}},\n\nHere\'s your weekly performance summary for your AI-routed accounts ({{period}}). {{account_count}} accounts had notable movement this period.',
-  pos_header: '📈 Positive movement',
-  neg_header: '📉 Needs attention',
+  intro: 'Hi {{first_name}},\n\nHere\'s your weekly performance summary for your AI-routed accounts ({{period}}). {{account_count}} accounts moved this period.',
+  pos_header: '📈 Movers up',
+  neg_header: '📉 Movers down',
   closing: 'This digest was generated automatically from the Buyerlink Calls AI Agent Registry. Reach out to your account manager with any questions.',
   fields: { rev:true, rev_delta:true, rev_pct:true, conv:true, margin:false, calls:false }
 };
@@ -2825,22 +2892,15 @@ function tplRenderList() {
     <div class="tpl-list-item${tplCurrentId === t.id ? ' active' : ''}" onclick="tplOpen('${t.id}')">
       <div style="min-width:0">
         <div class="tpl-list-name">${t.name}</div>
-        <div class="tpl-list-meta">${tplFieldSummary(t.fields)}</div>
+        <div class="tpl-list-meta">${tplFieldSummary(t)}</div>
       </div>
       ${i === 0 ? '<span class="tpl-default-badge">default</span>' : ''}
     </div>`).join('');
 }
 
-function tplFieldSummary(fields) {
-  if (!fields) return 'all fields';
-  const on = [];
-  if (fields.rev) on.push('rev');
-  if (fields.rev_delta) on.push('Δ$');
-  if (fields.rev_pct) on.push('Δ%');
-  if (fields.conv) on.push('conv');
-  if (fields.margin) on.push('margin');
-  if (fields.calls) on.push('calls');
-  return on.join(' · ') || 'no fields';
+function tplFieldSummary(t) {
+  const layout = (t && t.layout) || 'compact';
+  return layout === 'full' ? 'Full funnel' : 'Compact summary';
 }
 
 function tplOpen(id) {
@@ -2866,6 +2926,9 @@ function tplPopulateForm(t) {
   document.getElementById('tpl-f-pos-header').value = t.pos_header || '';
   document.getElementById('tpl-f-neg-header').value = t.neg_header || '';
   document.getElementById('tpl-f-closing').value = t.closing || '';
+  const layout = t.layout || 'compact';
+  document.getElementById('tpl-layout-compact').checked = layout === 'compact';
+  document.getElementById('tpl-layout-full').checked = layout === 'full';
   const f = t.fields || {};
   document.getElementById('tpl-f-rev').checked = f.rev !== false;
   document.getElementById('tpl-f-rev-delta').checked = f.rev_delta !== false;
@@ -2874,12 +2937,20 @@ function tplPopulateForm(t) {
   document.getElementById('tpl-f-margin').checked = !!f.margin;
   document.getElementById('tpl-f-calls').checked = !!f.calls;
   document.getElementById('tpl-delete-btn').style.display = tplCurrentId ? 'block' : 'none';
+  tplToggleDataFields();
   tplUpdatePreview();
+}
+
+function tplToggleDataFields() {
+  const isFull = document.getElementById('tpl-layout-full').checked;
+  const grp = document.getElementById('tpl-datafields-group');
+  if (grp) grp.style.opacity = isFull ? '1' : '0.4';
 }
 
 function tplReadForm() {
   return {
     name: document.getElementById('tpl-f-name').value.trim() || 'Untitled',
+    layout: document.getElementById('tpl-layout-full').checked ? 'full' : 'compact',
     subject: document.getElementById('tpl-f-subject').value.trim(),
     intro: document.getElementById('tpl-f-intro').value.trim(),
     pos_header: document.getElementById('tpl-f-pos-header').value.trim(),
@@ -2913,7 +2984,7 @@ function tplUpdatePreview() {
 }
 
 document.addEventListener('input', e => { if (e.target.closest && e.target.closest('#tpl-editor-form')) tplUpdatePreview(); });
-document.addEventListener('change', e => { if (e.target.closest && e.target.closest('#tpl-editor-form')) tplUpdatePreview(); });
+document.addEventListener('change', e => { if (e.target.closest && e.target.closest('#tpl-editor-form')) { if (e.target.name === 'tpl-layout') tplToggleDataFields(); tplUpdatePreview(); } });
 
 async function tplSave() {
   const data = tplReadForm();
@@ -2965,6 +3036,45 @@ function digestSwitchSection(section, el) {
   if (section === 'templates') tplLoad();
 }
 
+// ─── MANAGER FILTERED VIEW (shareable link) ───────────────────────────────────
+function parseManagerHash() {
+  const h = location.hash.replace(/^#/, '');
+  if (!h.startsWith('view=manager')) return null;
+  const params = new URLSearchParams(h);
+  return { email: params.get('email'), period: parseInt(params.get('period')) || 7 };
+}
+
+async function applyManagerView(email, days) {
+  await teamLoad();
+  insPopulateManagerDropdown();
+
+  const mgr = teamManagers.find(m => (m.manager_email||'').toLowerCase() === (email||'').toLowerCase());
+  if (!mgr) return;
+
+  // Switch to Insights tab
+  const insTabBtn = [...document.querySelectorAll('.nav-tab')].find(b => b.getAttribute('onclick')?.includes("'insights'"));
+  if (insTabBtn) switchTab('insights', insTabBtn);
+
+  // Set manager filter
+  const sel = document.getElementById('ins-manager-filter');
+  if (sel) { sel.value = mgr.id; insManagerFilter = mgr.id; }
+
+  // Set periods: B = last N days, A = prior N days
+  const today = new Date(); today.setHours(0,0,0,0);
+  const bEnd = new Date(today); bEnd.setDate(bEnd.getDate() - 1);
+  const bStart = new Date(bEnd); bStart.setDate(bStart.getDate() - (days - 1));
+  const aEnd = new Date(bStart); aEnd.setDate(aEnd.getDate() - 1);
+  const aStart = new Date(aEnd); aStart.setDate(aStart.getDate() - (days - 1));
+  insPeriods.a = { start: toISO(aStart), end: toISO(aEnd) };
+  insPeriods.b = { start: toISO(bStart), end: toISO(bEnd) };
+  insDrpState.a.pickStart = insPeriods.a.start; insDrpState.a.pickEnd = insPeriods.a.end;
+  insDrpState.b.pickStart = insPeriods.b.start; insDrpState.b.pickEnd = insPeriods.b.end;
+  const la = document.getElementById('ins-drp-a-label'); if (la) la.textContent = fmtShortD(insPeriods.a.start)+' – '+fmtShortD(insPeriods.a.end);
+  const lb = document.getElementById('ins-drp-b-label'); if (lb) lb.textContent = fmtShortD(insPeriods.b.start)+' – '+fmtShortD(insPeriods.b.end);
+
+  runInsights();
+}
+
 // ─── BOOT ─────────────────────────────────────────────────────────────────────
 async function bootDashboard() {
   document.getElementById('bq-sql').textContent = buildBQSQL();
@@ -2973,15 +3083,21 @@ async function bootDashboard() {
   await Promise.all([loadAliases(), loadAgentsFromSupabase(), loadTestCalls()]);
   loadVerticals();
   populateVerticalDropdowns();
-  teamLoad();
-  tplLoad(); // pre-fetch so template dropdown on digest cards is populated
+  await teamLoad();
+  insPopulateManagerDropdown();
+  tplLoad();
   crVisibleCols = {}; CR_COLUMNS.forEach(c => crVisibleCols[c.key] = c.def);
   document.getElementById('cr-colpicker-popover').innerHTML = crBuildColPicker();
   recomputeStats();
   applyFilters();
   setPreset(30, document.querySelector('.preset-btn[onclick*="30"]'));
+
+  // If arriving via a manager link, jump to filtered Insights
+  const mv = parseManagerHash();
+  if (mv && mv.email) applyManagerView(mv.email, mv.period);
 }
 bootDashboard();
+window.addEventListener('hashchange', () => { const mv = parseManagerHash(); if (mv && mv.email) applyManagerView(mv.email, mv.period); });
 </script>
 </body>
 </html>
