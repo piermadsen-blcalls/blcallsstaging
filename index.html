@@ -2669,7 +2669,6 @@ function digestBuildEmailBody(entry, pA, pB, tpl) {
     // CTA button
     body += `<div class="email-section" style="text-align:center;margin-top:24px">
       <a href="${link}" style="display:inline-block;font-family:Arial,sans-serif;font-size:13px;font-weight:600;color:#FFFFFF;background:#1A2E4A;text-decoration:none;padding:11px 24px;border-radius:6px">View full breakdown →</a>
-      <div style="font-size:11px;color:#A09C97;margin-top:8px;font-family:Arial,sans-serif">See the complete publisher → agent → advertiser funnel for every account</div>
     </div>`;
   }
 
@@ -2702,7 +2701,7 @@ function digestCompactGroup(header, accounts, accentColor, icon) {
         <div style="font-family:Arial,sans-serif;font-size:13px;font-weight:600;color:#1A1816">${m.key}
           <span style="font-size:10px;color:#A09C97;font-weight:400;text-transform:uppercase;letter-spacing:0.3px;margin-left:6px">${typeLabel}</span>
         </div>
-        <div style="font-family:monospace;font-size:12px;color:${revColor};font-weight:600;white-space:nowrap">${icon} ${insFmtDelta(m.dRev,'$')}</div>
+        <div style="font-family:monospace;font-size:12px;color:${revColor};font-weight:600;white-space:nowrap">${icon} ${insFmtDelta(m.dRev,'$')} rev</div>
       </div>
       <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">
         <tr>
@@ -3058,6 +3057,12 @@ async function applyManagerView(email, days) {
   // Set manager filter
   const sel = document.getElementById('ins-manager-filter');
   if (sel) { sel.value = mgr.id; insManagerFilter = mgr.id; }
+
+  // Loosen thresholds for the manager view: only revenue-change active at 1%
+  const enCalls = document.getElementById('en-calls'); if (enCalls) { enCalls.checked = false; toggleThr('calls'); }
+  const enConv = document.getElementById('en-conv'); if (enConv) { enConv.checked = false; toggleThr('conv'); }
+  const enRev = document.getElementById('en-rev'); if (enRev) { enRev.checked = true; toggleThr('rev'); }
+  const thrRev = document.getElementById('thr-rev-pct'); if (thrRev) thrRev.value = 1;
 
   // Set periods: B = last N days, A = prior N days
   const today = new Date(); today.setHours(0,0,0,0);
