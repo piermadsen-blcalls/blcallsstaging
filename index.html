@@ -497,6 +497,51 @@
   .digest-email-body .e-pos { color:var(--teal); }
   .digest-email-body .e-neg { color:var(--coral); }
   .digest-email-body .email-footer { font-size:11px; color:var(--text-3); margin-top:24px; padding-top:14px; border-top:1px solid var(--border); }
+
+  /* DIGEST SECTION TABS */
+  .digest-section-tabs { display:flex; gap:0; margin-bottom:24px; border-bottom:2px solid var(--border); }
+  .digest-section-tab { font-family:var(--sans); font-size:13px; font-weight:500; color:var(--text-2); background:none; border:none; padding:10px 20px; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-2px; transition:color 0.15s; }
+  .digest-section-tab.active { color:var(--brand-navy); border-bottom-color:var(--brand-mint); }
+  .digest-section-tab:hover:not(.active) { color:var(--text); }
+
+  /* TEMPLATE EDITOR */
+  .tpl-layout { display:grid; grid-template-columns:220px 1fr; gap:20px; align-items:start; }
+  @media(max-width:860px){.tpl-layout{grid-template-columns:1fr;}}
+  .tpl-sidebar { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; position:sticky; top:20px; }
+  .tpl-sidebar-header { padding:12px 14px; border-bottom:1px solid var(--border); background:var(--bg); display:flex; align-items:center; justify-content:space-between; }
+  .tpl-sidebar-title { font-size:11px; font-weight:600; letter-spacing:0.5px; text-transform:uppercase; color:var(--text-3); }
+  .tpl-list-item { display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border-bottom:1px solid var(--border); cursor:pointer; transition:background 0.1s; gap:8px; }
+  .tpl-list-item:last-child { border-bottom:none; }
+  .tpl-list-item:hover { background:var(--bg); }
+  .tpl-list-item.active { background:var(--brand-mint-bg); border-left:3px solid var(--brand-mint); padding-left:11px; }
+  .tpl-list-name { font-size:13px; font-weight:500; color:var(--text); }
+  .tpl-list-meta { font-size:10px; color:var(--text-3); margin-top:1px; }
+  .tpl-default-badge { font-size:9px; font-weight:600; padding:1px 6px; border-radius:100px; background:var(--brand-mint-bg); color:var(--brand-navy); border:1px solid var(--brand-mint); white-space:nowrap; flex-shrink:0; }
+  .tpl-editor { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); min-height:500px; }
+  .tpl-editor-empty { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:400px; padding:40px; text-align:center; }
+  .tpl-editor-header { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:16px 20px; border-bottom:1px solid var(--border); background:var(--bg); flex-wrap:wrap; }
+  .tpl-name-input { font-family:var(--serif); font-size:18px; font-weight:400; border:none; background:transparent; color:var(--text); outline:none; flex:1; min-width:160px; }
+  .tpl-name-input::placeholder { color:var(--text-3); }
+  .tpl-editor-actions { display:flex; gap:8px; align-items:center; flex-shrink:0; }
+  .tpl-delete-btn { font-family:var(--sans); font-size:12px; padding:5px 11px; border-radius:var(--radius-sm); border:1px solid #F09595; background:none; color:#A32D2D; cursor:pointer; }
+  .tpl-delete-btn:hover { background:#FCEBEB; }
+  .tpl-field-group { padding:16px 20px 0; }
+  .tpl-field-row { display:grid; grid-template-columns:1fr 1fr; gap:0 20px; }
+  .tpl-field-label { font-size:11px; font-weight:600; letter-spacing:0.4px; text-transform:uppercase; color:var(--text-3); margin-bottom:7px; display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; }
+  .tpl-hint { font-size:10px; font-weight:400; letter-spacing:0; text-transform:none; color:var(--text-3); }
+  .tpl-hint code { font-family:var(--mono); background:var(--bg); border:1px solid var(--border-strong); border-radius:3px; padding:0 4px; font-size:10px; color:var(--brand-navy); }
+  .tpl-field-input { width:100%; font-family:var(--sans); font-size:13px; padding:7px 10px; border:1px solid var(--border-strong); border-radius:var(--radius-sm); background:var(--bg); color:var(--text); outline:none; margin-bottom:0; }
+  .tpl-field-input:focus { border-color:var(--brand-navy); background:var(--surface); }
+  .tpl-field-textarea { width:100%; font-family:var(--sans); font-size:13px; padding:7px 10px; border:1px solid var(--border-strong); border-radius:var(--radius-sm); background:var(--bg); color:var(--text); outline:none; resize:vertical; line-height:1.6; }
+  .tpl-field-textarea:focus { border-color:var(--brand-navy); background:var(--surface); }
+  .tpl-fields-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+  @media(max-width:700px){.tpl-fields-grid{grid-template-columns:repeat(2,1fr);}}
+  .tpl-check-opt { display:flex; align-items:center; gap:7px; font-size:12px; color:var(--text); cursor:pointer; padding:6px 10px; border-radius:var(--radius-sm); border:1px solid var(--border-strong); background:var(--bg); transition:all 0.1s; }
+  .tpl-check-opt:hover { border-color:var(--brand-navy); }
+  .tpl-check-opt input[type=checkbox] { accent-color:var(--brand-navy); width:13px; height:13px; cursor:pointer; flex-shrink:0; }
+  .tpl-preview-section { padding:20px; margin-top:8px; border-top:1px solid var(--border); }
+  .tpl-preview-label { font-size:11px; font-weight:600; letter-spacing:0.4px; text-transform:uppercase; color:var(--text-3); margin-bottom:12px; }
+  .tpl-preview-frame { background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-sm); padding:20px 24px; font-size:13px; line-height:1.7; color:var(--text); }
 </style>
 </head>
 <body>
@@ -769,40 +814,135 @@
   <!-- WEEKLY DIGEST TAB -->
   <div id="tab-digest" class="tab-pane">
 
-    <div class="digest-config">
-      <div class="digest-config-group">
-        <div class="digest-config-label">Comparison window</div>
-        <div class="digest-config-inner">
-          <span style="font-size:12px;color:var(--text-2)">Last</span>
-          <input class="digest-threshold-input" type="number" id="dg-days" value="7" min="1" max="90" style="width:56px">
-          <span class="digest-unit">days vs prior same period</span>
-        </div>
-      </div>
-      <div class="digest-config-group">
-        <div class="digest-config-label">Min raw calls</div>
-        <div class="digest-config-inner">
-          <input class="digest-threshold-input" type="number" id="dg-thr-calls" value="10" min="0">
-        </div>
-      </div>
-      <div class="digest-config-group">
-        <div class="digest-config-label">Revenue change ≥</div>
-        <div class="digest-config-inner">
-          <input class="digest-threshold-input" type="number" id="dg-thr-rev" value="15" min="0" max="100">
-          <span class="digest-unit">%</span>
-        </div>
-      </div>
-      <div class="digest-config-group">
-        <div class="digest-config-label">Conversion change ≥</div>
-        <div class="digest-config-inner">
-          <input class="digest-threshold-input" type="number" id="dg-thr-conv" value="5" min="0" max="100">
-          <span class="digest-unit">pp</span>
-        </div>
-      </div>
-      <button class="digest-run-btn" id="dg-run-btn" onclick="digestRun()">Build digest</button>
+    <!-- SECTION TOGGLE -->
+    <div class="digest-section-tabs">
+      <button class="digest-section-tab active" onclick="digestSwitchSection('builder', this)">Digest builder</button>
+      <button class="digest-section-tab" onclick="digestSwitchSection('templates', this)">Email templates</button>
     </div>
 
-    <div id="dg-output">
-      <div class="ins-loading">Configure thresholds above and click <strong>Build digest</strong>.</div>
+    <!-- ── BUILDER SECTION ── -->
+    <div id="digest-section-builder">
+      <div class="digest-config">
+        <div class="digest-config-group">
+          <div class="digest-config-label">Comparison window</div>
+          <div class="digest-config-inner">
+            <span style="font-size:12px;color:var(--text-2)">Last</span>
+            <input class="digest-threshold-input" type="number" id="dg-days" value="7" min="1" max="90" style="width:56px">
+            <span class="digest-unit">days vs prior same period</span>
+          </div>
+        </div>
+        <div class="digest-config-group">
+          <div class="digest-config-label">Min raw calls</div>
+          <div class="digest-config-inner">
+            <input class="digest-threshold-input" type="number" id="dg-thr-calls" value="10" min="0">
+          </div>
+        </div>
+        <div class="digest-config-group">
+          <div class="digest-config-label">Revenue change ≥</div>
+          <div class="digest-config-inner">
+            <input class="digest-threshold-input" type="number" id="dg-thr-rev" value="15" min="0" max="100">
+            <span class="digest-unit">%</span>
+          </div>
+        </div>
+        <div class="digest-config-group">
+          <div class="digest-config-label">Conversion change ≥</div>
+          <div class="digest-config-inner">
+            <input class="digest-threshold-input" type="number" id="dg-thr-conv" value="5" min="0" max="100">
+            <span class="digest-unit">pp</span>
+          </div>
+        </div>
+        <button class="digest-run-btn" id="dg-run-btn" onclick="digestRun()">Build digest</button>
+      </div>
+      <div id="dg-output">
+        <div class="ins-loading">Configure thresholds above and click <strong>Build digest</strong>.</div>
+      </div>
+    </div>
+
+    <!-- ── TEMPLATES SECTION ── -->
+    <div id="digest-section-templates" style="display:none">
+      <div class="tpl-layout">
+
+        <!-- Left: template list -->
+        <div class="tpl-sidebar">
+          <div class="tpl-sidebar-header">
+            <span class="tpl-sidebar-title">Templates</span>
+            <button class="team-add-btn" onclick="tplShowNew()">+ New</button>
+          </div>
+          <div id="tpl-list"><div class="team-sidebar-empty">Loading…</div></div>
+        </div>
+
+        <!-- Right: editor -->
+        <div class="tpl-editor" id="tpl-editor">
+          <div class="tpl-editor-empty" id="tpl-editor-empty">
+            <div style="font-size:32px;margin-bottom:12px">✉</div>
+            <div style="font-size:14px;font-weight:500;color:var(--text);margin-bottom:6px">No template selected</div>
+            <div style="font-size:13px;color:var(--text-3)">Choose a template from the list or create a new one.</div>
+          </div>
+          <div id="tpl-editor-form" style="display:none">
+            <div class="tpl-editor-header">
+              <input class="tpl-name-input" type="text" id="tpl-f-name" placeholder="Template name…">
+              <div class="tpl-editor-actions">
+                <button class="tpl-delete-btn" id="tpl-delete-btn" onclick="tplDelete()" style="display:none">Delete</button>
+                <button class="team-add-btn" onclick="tplSave()" id="tpl-save-btn">Save template</button>
+              </div>
+            </div>
+
+            <!-- Subject -->
+            <div class="tpl-field-group">
+              <label class="tpl-field-label">Subject line
+                <span class="tpl-hint">Placeholders: <code>{{manager_name}}</code> <code>{{period}}</code> <code>{{account_count}}</code></span>
+              </label>
+              <input class="tpl-field-input" type="text" id="tpl-f-subject" placeholder="e.g. Your AI call performance update — {{period}}">
+            </div>
+
+            <!-- Intro -->
+            <div class="tpl-field-group">
+              <label class="tpl-field-label">Opening / intro
+                <span class="tpl-hint">Placeholders: <code>{{manager_name}}</code> <code>{{first_name}}</code> <code>{{period}}</code> <code>{{account_count}}</code></span>
+              </label>
+              <textarea class="tpl-field-textarea" id="tpl-f-intro" rows="4" placeholder="e.g. Hi {{first_name}}, here's your weekly performance summary for your AI-routed accounts…"></textarea>
+            </div>
+
+            <!-- Data fields -->
+            <div class="tpl-field-group">
+              <label class="tpl-field-label">Data fields to include in account rows</label>
+              <div class="tpl-fields-grid">
+                <label class="tpl-check-opt"><input type="checkbox" id="tpl-f-rev" checked><span>Revenue (prev → curr)</span></label>
+                <label class="tpl-check-opt"><input type="checkbox" id="tpl-f-rev-delta" checked><span>Revenue change $</span></label>
+                <label class="tpl-check-opt"><input type="checkbox" id="tpl-f-rev-pct" checked><span>Revenue change %</span></label>
+                <label class="tpl-check-opt"><input type="checkbox" id="tpl-f-conv" checked><span>Conversion change (pp)</span></label>
+                <label class="tpl-check-opt"><input type="checkbox" id="tpl-f-margin"><span>Margin change</span></label>
+                <label class="tpl-check-opt"><input type="checkbox" id="tpl-f-calls"><span>Raw call volume</span></label>
+              </div>
+            </div>
+
+            <!-- Positive section header -->
+            <div class="tpl-field-row">
+              <div class="tpl-field-group">
+                <label class="tpl-field-label">Positive movement section header</label>
+                <input class="tpl-field-input" type="text" id="tpl-f-pos-header" placeholder="e.g. 📈 Positive movement">
+              </div>
+              <div class="tpl-field-group">
+                <label class="tpl-field-label">Needs attention section header</label>
+                <input class="tpl-field-input" type="text" id="tpl-f-neg-header" placeholder="e.g. 📉 Needs attention">
+              </div>
+            </div>
+
+            <!-- Closing -->
+            <div class="tpl-field-group">
+              <label class="tpl-field-label">Closing / footer text</label>
+              <textarea class="tpl-field-textarea" id="tpl-f-closing" rows="3" placeholder="e.g. Reach out to your account manager with any questions."></textarea>
+            </div>
+
+            <!-- Live preview -->
+            <div class="tpl-preview-section">
+              <div class="tpl-preview-label">Live preview <span style="font-size:10px;color:var(--text-3);font-weight:400">(sample data)</span></div>
+              <div class="tpl-preview-frame" id="tpl-preview-frame"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
 
   </div>
@@ -2098,7 +2238,10 @@ async function digestRun() {
   document.getElementById('dg-output').innerHTML = `<div class="ins-loading"><span class="spinner"></span>Fetching call data for both periods…</div>`;
 
   try {
-    const [dA, dB] = await Promise.all([insFetchPeriod(pA.start, pA.end), insFetchPeriod(pB.start, pB.end)]);
+    const [dA, dB] = await Promise.all([
+      digestFetchPeriod(pA.start, pA.end),
+      digestFetchPeriod(pB.start, pB.end)
+    ]);
     digestResults = { dA, dB, pA, pB, thrCalls, thrRevPct, thrConvPp };
     digestRenderOutput(digestResults);
   } catch(e) {
@@ -2107,11 +2250,61 @@ async function digestRun() {
   btn.disabled = false; btn.textContent = 'Build digest';
 }
 
+// Fetch full publisher→agent→advertiser tuples for digest
+async function digestFetchPeriod(startISO, endISO) {
+  // advs: advertiser → { raw, sent, paid, rev, margin, publishers: {name→{raw,sent,paid}}, agents: {name→{raw,sent,paid}} }
+  // pubs: publisher  → { raw, sent, paid, rev, margin, advertisers: {name→{raw,sent,paid,rev}}, agents: {name→{raw,sent,paid}} }
+  const advs = {}, pubs = {};
+
+  function acc(map, key, c, extraInit) {
+    if (!map[key]) map[key] = { raw:0, sent:0, paid:0, rev:0, margin:0, ...extraInit() };
+    const r = map[key];
+    r.raw++;
+    if (isSent(c)) r.sent++;
+    if (isPaid(c)) r.paid++;
+    r.rev += c.advertiser_payin || 0;
+    r.margin += (c.advertiser_payin || 0) - (c.publisher_payout || 0);
+  }
+  function accSub(subMap, key, c) {
+    if (!subMap[key]) subMap[key] = { raw:0, sent:0, paid:0, rev:0 };
+    subMap[key].raw++;
+    if (isSent(c)) subMap[key].sent++;
+    if (isPaid(c)) subMap[key].paid++;
+    subMap[key].rev += c.advertiser_payin || 0;
+  }
+
+  const PAGE = 1000; let offset = 0;
+  while (true) {
+    const batch = await sbFetch(
+      `agent_calls_raw?select=publisher_name,ivr_name,advertiser_name,connect_duration,advertiser_payin,publisher_payout,result&call_date=gte.${startISO}&call_date=lte.${endISO}`,
+      { headers: { 'Range-Unit':'items', 'Range':`${offset}-${offset+PAGE-1}` } }
+    );
+    if (!batch || !batch.length) break;
+    for (const c of batch) {
+      const pub = c.publisher_name || '(unknown)';
+      const adv = c.advertiser_name || '(unknown)';
+      const agent = resolveIvrName(c.ivr_name || '(unknown)');
+
+      // Accumulate advertiser-level with publisher + agent breakdown
+      acc(advs, adv, c, () => ({ publishers:{}, agents:{} }));
+      accSub(advs[adv].publishers, pub, c);
+      accSub(advs[adv].agents, agent, c);
+
+      // Accumulate publisher-level with advertiser + agent breakdown
+      acc(pubs, pub, c, () => ({ advertisers:{}, agents:{} }));
+      accSub(pubs[pub].advertisers, adv, c);
+      accSub(pubs[pub].agents, agent, c);
+    }
+    if (batch.length < PAGE) break;
+    offset += PAGE;
+  }
+  return { advs, pubs };
+}
+
 function digestRenderOutput({ dA, dB, pA, pB, thrCalls, thrRevPct, thrConvPp }) {
   const advMovers = digestBuildMovers(dA.advs, dB.advs, thrCalls, thrRevPct, thrConvPp);
   const pubMovers = digestBuildMovers(dA.pubs, dB.pubs, thrCalls, thrRevPct, thrConvPp);
 
-  // Group by manager using new model
   const byEmail = {};
   function ensureEmail(mgr) {
     if (!byEmail[mgr.manager_email]) byEmail[mgr.manager_email] = { managerName: mgr.manager_name, email: mgr.manager_email, advAccounts: [], pubAccounts: [] };
@@ -2136,7 +2329,7 @@ function digestRenderOutput({ dA, dB, pA, pB, thrCalls, thrRevPct, thrConvPp }) 
   if (!emailList.length) {
     html += `<div class="ins-empty">No flagged accounts matched an assigned manager. ${totalFlags > 0 ? `${totalFlags} account${totalFlags!==1?'s':''} had notable movement but no manager is assigned — assign them in the <strong>Team</strong> tab.` : 'No accounts crossed the thresholds for this period.'}</div>`;
   } else {
-    html += emailList.map((entry, i) => digestRenderCard(entry, i, pA, pB)).join('');
+    html += emailList.map((entry, i) => digestRenderCard(entry, i, pA, pB, dA, dB)).join('');
   }
 
   if (unmatchedAdv.length || unmatchedPub.length) {
@@ -2155,8 +2348,8 @@ function digestBuildMovers(aMap, bMap, thrCalls, thrRevPct, thrConvPp) {
   const allKeys = new Set([...Object.keys(aMap), ...Object.keys(bMap)]);
   const rows = [];
   for (const key of allKeys) {
-    const a = aMap[key] || { raw:0, sent:0, paid:0, rev:0, margin:0 };
-    const b = bMap[key] || { raw:0, sent:0, paid:0, rev:0, margin:0 };
+    const a = aMap[key] || { raw:0, sent:0, paid:0, rev:0, margin:0, publishers:{}, advertisers:{}, agents:{} };
+    const b = bMap[key] || { raw:0, sent:0, paid:0, rev:0, margin:0, publishers:{}, advertisers:{}, agents:{} };
     if (Math.max(a.raw, b.raw) < thrCalls) continue;
     const dRev = b.rev - a.rev;
     const dRevPct = a.rev > 0 ? (dRev / a.rev) * 100 : (b.rev > 0 ? 100 : 0);
@@ -2168,20 +2361,30 @@ function digestBuildMovers(aMap, bMap, thrCalls, thrRevPct, thrConvPp) {
   return rows.sort((x, y) => Math.abs(y.dRev) - Math.abs(x.dRev));
 }
 
-function digestRenderCard(entry, idx, pA, pB) {
-  const allAccounts = [...entry.advAccounts.map(a => ({...a, type:'Advertiser'})), ...entry.pubAccounts.map(a => ({...a, type:'Publisher'}))];
-  const rows = allAccounts.map(m => {
-    const dc = m.dRev >= 0 ? 'delta-pos' : 'delta-neg';
-    const flagCls = m.dRev >= 0 ? 'flag-up' : 'flag-down';
-    const flagIcon = m.dRev >= 0 ? '▲' : '▼';
-    return `<tr>
-      <td><span style="font-size:12px;font-weight:500">${m.key}</span> <span style="font-size:10px;color:var(--text-3)">${m.type}</span></td>
-      <td class="ins-mono">${insFmtRev(m.a.rev)}</td>
-      <td class="ins-mono">${insFmtRev(m.b.rev)}</td>
-      <td class="ins-mono"><span class="${dc}">${insFmtDelta(m.dRev,'$')}</span> <span class="digest-flag ${flagCls}">${flagIcon} ${Math.abs(m.dRevPct).toFixed(0)}%</span></td>
-      <td class="ins-mono"><span class="${m.dConv>=0?'delta-pos':'delta-neg'}">${insFmtDelta(m.dConv,'pp')}</span></td>
-    </tr>`;
-  }).join('');
+// ── FUNNEL HELPERS ────────────────────────────────────────────────────────────
+function digestFmtConvPct(paid, raw) { return raw > 0 ? (paid/raw*100).toFixed(1)+'%' : '—'; }
+function digestDeltaStyle(v) { return v >= 0 ? 'color:var(--teal);font-weight:500' : 'color:var(--coral);font-weight:500'; }
+function digestDeltaSign(v) { return v >= 0 ? '+' : ''; }
+function digestSubDelta(aRow, bRow) {
+  // Returns delta strings for a sub-row {raw,sent,paid,rev}
+  const dRaw = (bRow?.raw||0) - (aRow?.raw||0);
+  const dSent = (bRow?.sent||0) - (aRow?.sent||0);
+  const dPaid = (bRow?.paid||0) - (aRow?.paid||0);
+  const dRev = (bRow?.rev||0) - (aRow?.rev||0);
+  return { dRaw, dSent, dPaid, dRev };
+}
+
+// Render one funnel card (in-app view)
+function digestRenderCard(entry, idx, pA, pB, dA, dB) {
+  const allAccounts = [
+    ...entry.advAccounts.map(m => ({ ...m, anchorType: 'advertiser' })),
+    ...entry.pubAccounts.map(m => ({ ...m, anchorType: 'publisher' }))
+  ];
+
+  const tplDefaultOpt = `<option value="">— Default template —</option>`;
+  const tplOpts = digestTemplates.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+
+  const funnelCards = allAccounts.map(m => digestRenderFunnelCard(m, dA, dB, false, pA, pB)).join('');
 
   return `<div class="digest-card" id="dg-card-${idx}">
     <div class="digest-card-header">
@@ -2191,73 +2394,279 @@ function digestRenderCard(entry, idx, pA, pB) {
         <div class="digest-card-meta">${allAccounts.length} account${allAccounts.length!==1?'s':''} flagged</div>
       </div>
       <div class="digest-card-actions">
-        <button class="digest-preview-btn" onclick="digestPreview(${idx})">Preview email</button>
+        <select class="cr-select" id="dg-tpl-${idx}" style="font-size:12px" title="Choose email template">
+          ${tplDefaultOpt}${tplOpts}
+        </select>
+        <button class="digest-preview-btn" onclick="digestPreview(${idx})">Preview</button>
         <button class="digest-send-btn" id="dg-send-${idx}" onclick="digestSendOne(${idx})">
           <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M2 8l12-6-5 14-2-5-5-3z" stroke="white" stroke-width="1.4" stroke-linejoin="round"/></svg>
-          Send digest
+          Send
         </button>
       </div>
     </div>
-    <div style="overflow-x:auto">
-      <table class="digest-accounts-table">
-        <thead><tr><th>Account</th><th>Rev (prev)</th><th>Rev (curr)</th><th>∆ Revenue</th><th>∆ Conv.</th></tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
+    <div style="padding:0 0 4px">${funnelCards}</div>
+  </div>`;
+}
+
+// Renders a single account's funnel card — shared between in-app and email
+function digestRenderFunnelCard(m, dA, dB, forEmail, pA, pB) {
+  const isAdv = m.anchorType === 'advertiser';
+  const mapA = isAdv ? dA.advs : dA.pubs;
+  const mapB = isAdv ? dB.advs : dB.pubs;
+  const dataA = mapA[m.key] || { raw:0, sent:0, paid:0, rev:0, margin:0, publishers:{}, advertisers:{}, agents:{} };
+  const dataB = mapB[m.key] || { raw:0, sent:0, paid:0, rev:0, margin:0, publishers:{}, advertisers:{}, agents:{} };
+
+  const dirIcon = m.dRev >= 0 ? '▲' : '▼';
+  const dirColor = m.dRev >= 0 ? '#0F6E56' : '#993C1D';
+  const dirBg = m.dRev >= 0 ? '#E1F5EE' : '#FAECE7';
+  const anchorLabel = isAdv ? 'Advertiser' : 'Publisher';
+
+  // Period labels — use passed pA/pB if available, fall back to digestResults
+  const rA = pA || digestResults?.pA;
+  const rB = pB || digestResults?.pB;
+  function safePeriodLabel(r) {
+    if (!r) return 'Prior';
+    // If start looks like an ISO date (YYYY-MM-DD), use fmtShortD; otherwise use as-is
+    const isISO = s => /^\d{4}-\d{2}-\d{2}$/.test(s||'');
+    const s = isISO(r.start) ? fmtShortD(r.start) : (r.start||'');
+    const e = isISO(r.end) ? fmtShortD(r.end) : (r.end||'');
+    return `${s}–${e}`;
+  }
+  const lblA = safePeriodLabel(rA);
+  const lblB = safePeriodLabel(rB);
+
+  const S = forEmail ? 'font-family:Arial,sans-serif;' : '';
+  const cardBg = forEmail ? 'background:#F7F5F0;' : 'background:var(--bg);';
+  const borderR = forEmail ? 'border-radius:6px;' : 'border-radius:var(--radius-sm);';
+  const borderCol = forEmail ? '#E0DDD6' : 'var(--border)';
+  const mutedColor = forEmail ? '#A09C97' : 'var(--text-3)';
+  const textColor = forEmail ? '#1A1816' : 'var(--text)';
+
+  function colFooterUnused() { return ''; }
+
+  // ── PUBLISHER ROWS ─────────────────────────────────────────────────────────
+  const pubKeys = isAdv
+    ? [...new Set([...Object.keys(dataA.publishers||{}), ...Object.keys(dataB.publishers||{})])]
+    : [m.key];
+  const pubRowsHtml = pubKeys
+    .sort((a,b) => ((dataB.publishers?.[b]?.raw||0)+(dataA.publishers?.[a]?.raw||0)) - ((dataA.publishers?.[a]?.raw||0)+(dataB.publishers?.[b]?.raw||0)))
+    .slice(0,6).map(pub => {
+      const aR = isAdv ? (dataA.publishers?.[pub]||{raw:0,sent:0,paid:0}) : {raw:dataA.raw,sent:dataA.sent,paid:dataA.paid};
+      const bR = isAdv ? (dataB.publishers?.[pub]||{raw:0,sent:0,paid:0}) : {raw:dataB.raw,sent:dataB.sent,paid:dataB.paid};
+      const highlight = !isAdv;
+      return [
+        digestFunnelRowAB(pub, aR.raw, bR.raw, 'raw', highlight, forEmail, borderCol, S, textColor, mutedColor),
+        digestFunnelRowAB(null, aR.sent, bR.sent, 'sent', false, forEmail, borderCol, S, textColor, mutedColor),
+        digestFunnelRowAB(null, aR.paid, bR.paid, 'paid', false, forEmail, borderCol, S, textColor, mutedColor, true),
+      ].join('');
+    }).join('');
+
+  // ── AGENT ROWS (middle) ────────────────────────────────────────────────────
+  const agA = { raw:dataA.raw, sent:dataA.sent, paid:dataA.paid };
+  const agB = { raw:dataB.raw, sent:dataB.sent, paid:dataB.paid };
+  const agentMidHtml = [
+    digestFunnelRowAB('Totals', agA.raw, agB.raw, 'raw', false, forEmail, borderCol, S, textColor, mutedColor),
+    digestFunnelRowAB(null, agA.sent, agB.sent, 'sent', false, forEmail, borderCol, S, textColor, mutedColor),
+    digestFunnelRowAB(null, agA.paid, agB.paid, 'paid', false, forEmail, borderCol, S, textColor, mutedColor, true),
+  ].join('');
+
+  // Per-agent breakdown (if multiple agents)
+  const agentKeys = [...new Set([...Object.keys(dataA.agents||{}), ...Object.keys(dataB.agents||{})])];
+  const multiAgentHtml = agentKeys.length > 1 ? agentKeys
+    .sort((a,b) => ((dataB.agents?.[b]?.raw||0)) - ((dataB.agents?.[a]?.raw||0)))
+    .slice(0,4).map(ag => {
+      const aR = dataA.agents?.[ag]||{raw:0,sent:0,paid:0};
+      const bR = dataB.agents?.[ag]||{raw:0,sent:0,paid:0};
+      return digestFunnelRowAB(ag, aR.raw, bR.raw, 'raw', false, forEmail, borderCol, S, textColor, mutedColor, false, true);
+    }).join('') : '';
+
+  const agentDivider = agentKeys.length > 1
+    ? `<div style="margin-top:8px;padding-top:6px;border-top:1px dashed ${borderCol}">
+        <div style="${S}font-size:9px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;color:${mutedColor};margin-bottom:4px">By agent</div>
+        ${multiAgentHtml}
+       </div>` : '';
+
+  // ── ADVERTISER ROWS ────────────────────────────────────────────────────────
+  const advKeys = isAdv
+    ? [m.key]
+    : [...new Set([...Object.keys(dataA.advertisers||{}), ...Object.keys(dataB.advertisers||{})])];
+  const advRowsHtml = advKeys
+    .sort((a,b) => ((dataB.advertisers?.[b]?.rev||0)) - ((dataB.advertisers?.[a]?.rev||0)))
+    .slice(0,6).map(adv => {
+      const aR = isAdv ? {raw:dataA.raw,sent:dataA.sent,paid:dataA.paid,rev:dataA.rev} : (dataA.advertisers?.[adv]||{raw:0,sent:0,paid:0,rev:0});
+      const bR = isAdv ? {raw:dataB.raw,sent:dataB.sent,paid:dataB.paid,rev:dataB.rev} : (dataB.advertisers?.[adv]||{raw:0,sent:0,paid:0,rev:0});
+      const highlight = isAdv;
+      const aConv = aR.raw > 0 ? (aR.paid/aR.raw*100) : 0;
+      const bConv = bR.raw > 0 ? (bR.paid/bR.raw*100) : 0;
+      return [
+        digestFunnelRowAB(adv, aR.paid, bR.paid, 'paid', highlight, forEmail, borderCol, S, textColor, mutedColor),
+        digestFunnelRowAB(null, aR.rev, bR.rev, 'rev', false, forEmail, borderCol, S, textColor, mutedColor, false, false, true),
+        digestFunnelRowAB(null, aConv, bConv, 'conv%', false, forEmail, borderCol, S, textColor, mutedColor, true),
+      ].join('');
+    }).join('');
+
+  // Shared section renderer — full width, name col + prior + current + delta
+  function sectionTable(title, rowsHtml, emptyMsg) {
+    const titleDiv = `<div style="${S}font-size:9px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:${mutedColor};padding:8px 20px 5px;border-bottom:1px solid ${borderCol};background:${forEmail?'#FAFAF8':'var(--surface)'}">${title}</div>`;
+    const headerRow = forEmail
+      ? `<tr style="background:${forEmail?'#FAFAF8':'var(--bg)'}">
+          <td style="${S}font-size:8px;font-weight:600;color:${mutedColor};padding:4px 8px 4px 16px;width:40%"></td>
+          <td style="${S}font-size:8px;font-weight:600;color:${mutedColor};text-align:right;padding:4px 8px;width:18%">Prev</td>
+          <td style="${S}font-size:8px;font-weight:600;color:${textColor};text-align:right;padding:4px 8px;width:18%">Curr</td>
+          <td style="${S}font-size:8px;font-weight:600;color:${mutedColor};text-align:center;padding:4px 16px 4px 8px;width:14%">Δ</td>
+        </tr>`
+      : `<div style="display:grid;grid-template-columns:1fr 90px 90px 70px;padding:5px 20px;background:var(--bg)">
+          <span></span>
+          <span style="font-size:9px;font-weight:600;color:var(--text-3);text-align:right;padding-right:8px">Prev</span>
+          <span style="font-size:9px;font-weight:600;color:var(--text);text-align:right;padding-right:8px">Curr</span>
+          <span style="font-size:9px;font-weight:600;color:var(--text-3);text-align:center">Δ</span>
+         </div>`;
+
+    if (forEmail) {
+      return `${titleDiv}<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">
+        ${headerRow}
+        ${rowsHtml || `<tr><td colspan="4" style="${S}font-size:11px;color:${mutedColor};font-style:italic;padding:8px 16px">No data</td></tr>`}
+      </table>`;
+    }
+    return `${titleDiv}${headerRow}
+      <div style="padding:0 0 4px">
+        ${rowsHtml || `<div style="font-size:11px;color:var(--text-3);font-style:italic;padding:8px 16px">No data</div>`}
+      </div>`;
+  }
+
+  return `
+  <div style="${cardBg}border:1px solid ${borderCol};${borderR}margin:12px 16px;overflow:hidden">
+    <!-- Account header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:${forEmail?'#FFFFFF':'var(--surface)'};border-bottom:2px solid ${borderCol};flex-wrap:wrap;gap:6px">
+      <div>
+        <span style="${S}font-size:14px;font-weight:600;color:${textColor}">${m.key}</span>
+        <span style="${S}font-size:10px;color:${mutedColor};margin-left:8px;text-transform:uppercase;letter-spacing:0.4px">${anchorLabel}</span>
+        <div style="${S}font-size:10px;color:${mutedColor};margin-top:3px">Prev <strong style="font-weight:600;color:${textColor}">${lblA}</strong> &nbsp;→&nbsp; Curr <strong style="font-weight:600;color:${textColor}">${lblB}</strong></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <span style="${S}font-size:12px;font-family:monospace;color:${dirColor}">${dirIcon} ${insFmtDelta(m.dRev,'$')} rev</span>
+        <span style="${S}font-size:11px;font-weight:600;padding:2px 10px;border-radius:100px;background:${dirBg};color:${dirColor}">${digestDeltaSign(m.dRevPct)}${m.dRevPct.toFixed(0)}%</span>
+        <span style="${S}font-size:12px;font-family:monospace;color:${m.dConv>=0?'#0F6E56':'#993C1D'}">${digestDeltaSign(m.dConv)}${m.dConv.toFixed(1)}% conv</span>
+      </div>
+    </div>
+
+    <!-- Publishers section -->
+    <div style="border-bottom:1px solid ${borderCol}">
+      ${sectionTable('Publishers', pubRowsHtml)}
+    </div>
+
+    <!-- AI Agent section -->
+    <div style="border-bottom:1px solid ${borderCol}">
+      ${sectionTable('AI Agent', agentMidHtml + (agentKeys.length > 1 ? agentDivider : ''))}
+    </div>
+
+    <!-- Advertisers section -->
+    <div>
+      ${sectionTable('Advertisers', advRowsHtml)}
     </div>
   </div>`;
 }
 
-function digestBuildEmailBody(entry, pA, pB) {
-  const allAccounts = [...entry.advAccounts.map(a => ({...a, type:'Advertiser'})), ...entry.pubAccounts.map(a => ({...a, type:'Publisher'}))];
+// Renders one stat row in A / B / Δ format
+// name=null means it's a continuation row (indent, no name)
+function digestFunnelRowAB(name, valA, valB, statType, highlight, forEmail, borderCol, S, textColor, mutedColor, isLast=false, isSubRow=false, isRev=false) {
+  const dVal = (valB || 0) - (valA || 0);
+  const dStyle = dVal >= 0 ? 'color:#0F6E56' : 'color:#993C1D';
+  const dSign = dVal >= 0 ? '+' : '';
+  const nameColor = highlight ? (dVal >= 0 ? '#0F6E56' : '#993C1D') : (name ? textColor : mutedColor);
+  const fontW = highlight ? '600' : (name ? '500' : '400');
+  const indent = (!name || isSubRow) ? (forEmail ? 'padding-left:8px;' : 'padding-left:10px;') : '';
+  const rowBorderBottom = isLast ? `border-bottom:1px solid ${forEmail?'#E0DDD6':'var(--border)'};padding-bottom:5px;margin-bottom:5px;` : '';
+
+  function fmt(v) {
+    if (isRev) return insFmtRev(v||0);
+    if (statType === 'conv%') return (v||0).toFixed(1) + '%';
+    return (v||0).toLocaleString();
+  }
+  function fmtDelta(d) {
+    if (isRev) return (d >= 0 ? '+' : '−') + insFmtRev(Math.abs(d));
+    if (statType === 'conv%') return (d >= 0 ? '+' : '') + d.toFixed(1) + '%';
+    return dSign + Math.round(d).toLocaleString();
+  }
+
+  const nameCell = name
+    ? `<span style="${S}font-size:11px;font-weight:${fontW};color:${nameColor};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;max-width:100%;${indent}" title="${name}">${name}</span>`
+    : `<span style="${S}font-size:9px;color:${mutedColor};display:block;${indent}">${statType}</span>`;
+
+  if (forEmail) {
+    // Email: use table row for reliable rendering across clients
+    return `<tr style="${rowBorderBottom}">
+      <td style="${S}font-size:11px;font-weight:${fontW};color:${nameColor};padding:2px 3px 2px 16px;${indent}overflow:hidden;max-width:0;width:40%">${name||statType}</td>
+      <td style="${S}font-size:11px;font-family:monospace;color:${mutedColor};text-align:right;padding:2px 4px;white-space:nowrap;width:20%">${fmt(valA)}</td>
+      <td style="${S}font-size:11px;font-family:monospace;color:${textColor};text-align:right;padding:2px 4px;white-space:nowrap;width:20%">${fmt(valB)}</td>
+      <td style="${S}font-size:11px;font-family:monospace;${dStyle};text-align:center;padding:2px 16px 2px 8px;white-space:nowrap;font-weight:500;width:20%">${dVal !== 0 ? fmtDelta(dVal) : '—'}</td>
+    </tr>`;
+  }
+
+  // App: CSS grid — matches header grid (1fr 90px 90px 70px), with side padding
+  return `<div style="display:grid;grid-template-columns:1fr 90px 90px 70px;gap:0;align-items:center;padding:3px 20px;${rowBorderBottom}">
+    ${nameCell}
+    <span style="font-size:12px;font-family:var(--mono);color:${mutedColor};text-align:right;padding-right:8px;white-space:nowrap">${fmt(valA)}</span>
+    <span style="font-size:12px;font-family:var(--mono);color:${textColor};text-align:right;padding-right:8px;white-space:nowrap">${fmt(valB)}</span>
+    <span style="font-size:12px;font-family:var(--mono);${dStyle};text-align:center;font-weight:500;white-space:nowrap">${dVal !== 0 ? fmtDelta(dVal) : '—'}</span>
+  </div>`;
+}
+
+function digestBuildEmailBody(entry, pA, pB, tpl) {
+  const allAccounts = [
+    ...entry.advAccounts.map(m => ({ ...m, anchorType: 'advertiser' })),
+    ...entry.pubAccounts.map(m => ({ ...m, anchorType: 'publisher' }))
+  ];
   const periodLabel = `${fmtShortD(pA.start)}–${fmtShortD(pA.end)} vs ${fmtShortD(pB.start)}–${fmtShortD(pB.end)}`;
+  const firstName = entry.managerName.split(' ')[0];
+
+  const posHeader = tpl?.pos_header || '📈 Positive movement';
+  const negHeader = tpl?.neg_header || '📉 Needs attention';
+  const closing = tpl?.closing || 'This digest was generated automatically from the Buyerlink Calls AI Agent Registry. Reach out to your account manager with any questions.';
+
+  function fillPlaceholders(str) {
+    return (str||'')
+      .replace(/\{\{manager_name\}\}/g, entry.managerName)
+      .replace(/\{\{first_name\}\}/g, firstName)
+      .replace(/\{\{period\}\}/g, periodLabel)
+      .replace(/\{\{account_count\}\}/g, allAccounts.length);
+  }
+
+  const subject = fillPlaceholders(tpl?.subject || 'Weekly AI Performance Digest — {{period}}');
+  const intro = fillPlaceholders(tpl?.intro || `Hi {{first_name}}, here's a summary of notable performance movement across your AI-routed accounts ({{period}}). {{account_count}} account${allAccounts.length!==1?'s':''} had notable movement this period.`);
+
+  // Use digestResults data if available, otherwise empty
+  const dA = digestResults?.dA || { advs:{}, pubs:{} };
+  const dB = digestResults?.dB || { advs:{}, pubs:{} };
 
   const ups = allAccounts.filter(m => m.dRev >= 0);
   const downs = allAccounts.filter(m => m.dRev < 0);
 
-  let body = `<h2>Weekly AI Performance Digest</h2>
-  <div class="email-sub">Period: ${periodLabel} · Sent from Buyerlink Calls AI Agent Registry</div>`;
-
-  body += `<div class="email-section"><div class="email-section-title">Hi ${entry.managerName.split(' ')[0]},</div>
-  <div style="font-size:13px;color:var(--text-2);line-height:1.7">Here's a summary of notable performance movement across your AI-routed accounts this week. ${allAccounts.length} account${allAccounts.length!==1?'s':''} crossed the flagging threshold.</div></div>`;
+  let body = `<h2>${subject}</h2><div class="email-sub">Period: ${periodLabel} · Buyerlink Calls AI Agent Registry</div>`;
+  body += `<div class="email-section"><div style="font-size:13px;color:#6B6760;line-height:1.7">${intro}</div></div>`;
 
   if (ups.length) {
-    body += `<div class="email-section"><div class="email-section-title">📈 Positive movement (${ups.length})</div>`;
-    body += ups.map(m => `<div class="email-account-row">
-      <div class="email-acct-name">${m.key} <span style="font-size:10px;color:var(--text-3);font-weight:400">${m.type}</span></div>
-      <div class="email-deltas">
-        <span class="e-pos">${insFmtDelta(m.dRev,'$')} rev</span>
-        <span style="color:var(--text-3)">${insFmtRev(m.a.rev)} → ${insFmtRev(m.b.rev)}</span>
-        <span class="e-pos">${insFmtDelta(m.dConv,'pp')} conv</span>
-      </div>
-    </div>`).join('');
+    body += `<div class="email-section"><div class="email-section-title">${posHeader} (${ups.length})</div>`;
+    body += ups.map(m => digestRenderFunnelCard(m, dA, dB, true, pA, pB)).join('');
     body += `</div>`;
   }
-
   if (downs.length) {
-    body += `<div class="email-section"><div class="email-section-title">📉 Needs attention (${downs.length})</div>`;
-    body += downs.map(m => `<div class="email-account-row">
-      <div class="email-acct-name">${m.key} <span style="font-size:10px;color:var(--text-3);font-weight:400">${m.type}</span></div>
-      <div class="email-deltas">
-        <span class="e-neg">${insFmtDelta(m.dRev,'$')} rev</span>
-        <span style="color:var(--text-3)">${insFmtRev(m.a.rev)} → ${insFmtRev(m.b.rev)}</span>
-        <span class="e-neg">${insFmtDelta(m.dConv,'pp')} conv</span>
-      </div>
-    </div>`).join('');
+    body += `<div class="email-section"><div class="email-section-title">${negHeader} (${downs.length})</div>`;
+    body += downs.map(m => digestRenderFunnelCard(m, dA, dB, true, pA, pB)).join('');
     body += `</div>`;
   }
-
-  body += `<div class="email-footer">This digest was generated automatically from the Buyerlink Calls AI Agent Registry based on your configured accounts. Reply to this email or reach out to your team contact with any questions.</div>`;
+  body += `<div class="email-footer">${closing}</div>`;
   return body;
 }
 
 function digestPreview(idx) {
   if (!digestResults) return;
-  const allAccounts = [...(digestResults.dA ? [] : [])]; // unused, just guard
   const emailList = digestGetEmailList(digestResults);
   const entry = emailList[idx];
   if (!entry) return;
-  document.getElementById('dg-preview-title').textContent = `Preview — ${entry.email}`;
-  document.getElementById('dg-preview-body').innerHTML = digestBuildEmailBody(entry, digestResults.pA, digestResults.pB);
+  const tpl = digestGetSelectedTemplate(idx);
+  document.getElementById('dg-preview-title').textContent = `Preview — ${entry.email}${tpl ? ` · ${tpl.name}` : ''}`;
+  document.getElementById('dg-preview-body').innerHTML = digestBuildEmailBody(entry, digestResults.pA, digestResults.pB, tpl);
   document.getElementById('digest-preview-modal').classList.add('open');
 }
 
@@ -2281,15 +2690,16 @@ async function digestSendOne(idx) {
   const emailList = digestGetEmailList(digestResults);
   const entry = emailList[idx];
   if (!entry) return;
+  const tpl = digestGetSelectedTemplate(idx);
   const btn = document.getElementById('dg-send-' + idx);
   btn.disabled = true; btn.innerHTML = '<span class="spinner" style="width:11px;height:11px;margin-right:4px"></span>Sending…';
   try {
-    await digestFireWebhook(entry, digestResults.pA, digestResults.pB);
+    await digestFireWebhook(entry, digestResults.pA, digestResults.pB, tpl);
     btn.classList.add('sent');
     btn.innerHTML = '✓ Sent';
   } catch(e) {
     btn.disabled = false;
-    btn.innerHTML = `<svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M2 8l12-6-5 14-2-5-5-3z" stroke="white" stroke-width="1.4" stroke-linejoin="round"/></svg> Send digest`;
+    btn.innerHTML = `<svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M2 8l12-6-5 14-2-5-5-3z" stroke="white" stroke-width="1.4" stroke-linejoin="round"/></svg> Send`;
     alert('Send failed: ' + e.message);
   }
 }
@@ -2302,24 +2712,34 @@ async function digestSendAll() {
     if (btn && btn.classList.contains('sent')) continue;
     if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner" style="width:11px;height:11px;margin-right:4px"></span>Sending…'; }
     try {
-      await digestFireWebhook(emailList[i], digestResults.pA, digestResults.pB);
+      const tpl = digestGetSelectedTemplate(i);
+      await digestFireWebhook(emailList[i], digestResults.pA, digestResults.pB, tpl);
       if (btn) { btn.classList.add('sent'); btn.innerHTML = '✓ Sent'; }
     } catch(e) {
-      if (btn) { btn.disabled = false; btn.innerHTML = `<svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M2 8l12-6-5 14-2-5-5-3z" stroke="white" stroke-width="1.4" stroke-linejoin="round"/></svg> Send digest`; }
+      if (btn) { btn.disabled = false; btn.innerHTML = `<svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M2 8l12-6-5 14-2-5-5-3z" stroke="white" stroke-width="1.4" stroke-linejoin="round"/></svg> Send`; }
       alert(`Failed to send to ${emailList[i].email}: ${e.message}`);
     }
-    await new Promise(r => setTimeout(r, 300)); // brief stagger
+    await new Promise(r => setTimeout(r, 300));
   }
 }
 
-async function digestFireWebhook(entry, pA, pB) {
+async function digestFireWebhook(entry, pA, pB, tpl) {
   const allAccounts = [...entry.advAccounts.map(a => ({...a, type:'advertiser'})), ...entry.pubAccounts.map(a => ({...a, type:'publisher'}))];
   const periodLabel = `${fmtShortD(pA.start)}–${fmtShortD(pA.end)} vs ${fmtShortD(pB.start)}–${fmtShortD(pB.end)}`;
+
+  function fillPlaceholders(str) {
+    return (str||'')
+      .replace(/\{\{manager_name\}\}/g, entry.managerName)
+      .replace(/\{\{first_name\}\}/g, entry.managerName.split(' ')[0])
+      .replace(/\{\{period\}\}/g, periodLabel)
+      .replace(/\{\{account_count\}\}/g, allAccounts.length);
+  }
 
   const payload = {
     to_email: entry.email,
     to_name: entry.managerName,
-    subject: `Weekly AI Performance Digest — ${periodLabel}`,
+    subject: fillPlaceholders(tpl?.subject || 'Weekly AI Performance Digest — {{period}}'),
+    template_name: tpl?.name || 'Default',
     period_a: pA,
     period_b: pB,
     period_label: periodLabel,
@@ -2335,7 +2755,7 @@ async function digestFireWebhook(entry, pA, pB) {
       margin_delta: Math.round(m.dMargin * 100) / 100,
       direction: m.dRev >= 0 ? 'up' : 'down'
     })),
-    email_body_html: digestBuildEmailBody(entry, pA, pB)
+    email_body_html: digestBuildEmailBody(entry, pA, pB, tpl)
   };
 
   const res = await fetch(WEBHOOK_URL, {
@@ -2358,6 +2778,193 @@ document.addEventListener('DOMContentLoaded', () => {
   if (srch) srch.addEventListener('input', () => { if (crRows.length) crRender(); });
 });
 
+// ─── EMAIL TEMPLATES ──────────────────────────────────────────────────────────
+let digestTemplates = [];
+let tplCurrentId = null;
+
+const TPL_DEFAULTS = {
+  name: 'New template',
+  subject: 'Your AI call performance update — {{period}}',
+  intro: 'Hi {{first_name}},\n\nHere\'s your weekly performance summary for your AI-routed accounts ({{period}}). {{account_count}} accounts had notable movement this period.',
+  pos_header: '📈 Positive movement',
+  neg_header: '📉 Needs attention',
+  closing: 'This digest was generated automatically from the Buyerlink Calls AI Agent Registry. Reach out to your account manager with any questions.',
+  fields: { rev:true, rev_delta:true, rev_pct:true, conv:true, margin:false, calls:false }
+};
+
+const TPL_SAMPLE = {
+  managerName: 'Sarah Johnson',
+  email: 'sarah@example.com',
+  advAccounts: [
+    { key:'Acme Insurance', anchorType:'advertiser', a:{raw:120,sent:96,paid:24,rev:4800,margin:1200,publishers:{'MediaAlpha':{raw:80,sent:65,paid:16,rev:3200},'QuinStreet':{raw:40,sent:31,paid:8,rev:1600}},agents:{'ASCND Agent - Home':{raw:120,sent:96,paid:24}},advertisers:{}}, b:{raw:145,sent:118,paid:36,rev:7200,margin:1980,publishers:{'MediaAlpha':{raw:95,sent:78,paid:22,rev:4400},'QuinStreet':{raw:50,sent:40,paid:14,rev:2800}},agents:{'ASCND Agent - Home':{raw:145,sent:118,paid:36}},advertisers:{}}, dRev:2400, dRevPct:50, dConv:4.8, dMargin:780 },
+    { key:'Shield Auto', anchorType:'advertiser', a:{raw:80,sent:62,paid:14,rev:2800,margin:700,publishers:{'EverQuote':{raw:80,sent:62,paid:14,rev:2800}},agents:{'ASCND Agent - Auto':{raw:80,sent:62,paid:14}},advertisers:{}}, b:{raw:72,sent:55,paid:10,rev:2000,margin:500,publishers:{'EverQuote':{raw:72,sent:55,paid:10,rev:2000}},agents:{'ASCND Agent - Auto':{raw:72,sent:55,paid:10}},advertisers:{}}, dRev:-800, dRevPct:-28.6, dConv:-4.5, dMargin:-200 }
+  ],
+  pubAccounts: []
+};
+
+async function tplLoad() {
+  try {
+    const rows = await sbFetch('digest_templates?select=*&order=created_at.asc');
+    digestTemplates = rows || [];
+    tplRenderList();
+  } catch(e) {
+    console.warn('tplLoad:', e.message);
+    digestTemplates = [];
+    tplRenderList();
+  }
+}
+
+function tplRenderList() {
+  const list = document.getElementById('tpl-list');
+  if (!list) return;
+  if (!digestTemplates.length) {
+    list.innerHTML = '<div class="team-sidebar-empty">No templates yet — create one.</div>';
+    return;
+  }
+  list.innerHTML = digestTemplates.map((t, i) => `
+    <div class="tpl-list-item${tplCurrentId === t.id ? ' active' : ''}" onclick="tplOpen('${t.id}')">
+      <div style="min-width:0">
+        <div class="tpl-list-name">${t.name}</div>
+        <div class="tpl-list-meta">${tplFieldSummary(t.fields)}</div>
+      </div>
+      ${i === 0 ? '<span class="tpl-default-badge">default</span>' : ''}
+    </div>`).join('');
+}
+
+function tplFieldSummary(fields) {
+  if (!fields) return 'all fields';
+  const on = [];
+  if (fields.rev) on.push('rev');
+  if (fields.rev_delta) on.push('Δ$');
+  if (fields.rev_pct) on.push('Δ%');
+  if (fields.conv) on.push('conv');
+  if (fields.margin) on.push('margin');
+  if (fields.calls) on.push('calls');
+  return on.join(' · ') || 'no fields';
+}
+
+function tplOpen(id) {
+  const t = digestTemplates.find(t => t.id === id);
+  if (!t) return;
+  tplCurrentId = id;
+  tplRenderList();
+  tplPopulateForm(t);
+}
+
+function tplShowNew() {
+  tplCurrentId = null;
+  tplRenderList();
+  tplPopulateForm(TPL_DEFAULTS);
+}
+
+function tplPopulateForm(t) {
+  document.getElementById('tpl-editor-empty').style.display = 'none';
+  document.getElementById('tpl-editor-form').style.display = 'block';
+  document.getElementById('tpl-f-name').value = t.name || '';
+  document.getElementById('tpl-f-subject').value = t.subject || '';
+  document.getElementById('tpl-f-intro').value = t.intro || '';
+  document.getElementById('tpl-f-pos-header').value = t.pos_header || '';
+  document.getElementById('tpl-f-neg-header').value = t.neg_header || '';
+  document.getElementById('tpl-f-closing').value = t.closing || '';
+  const f = t.fields || {};
+  document.getElementById('tpl-f-rev').checked = f.rev !== false;
+  document.getElementById('tpl-f-rev-delta').checked = f.rev_delta !== false;
+  document.getElementById('tpl-f-rev-pct').checked = f.rev_pct !== false;
+  document.getElementById('tpl-f-conv').checked = f.conv !== false;
+  document.getElementById('tpl-f-margin').checked = !!f.margin;
+  document.getElementById('tpl-f-calls').checked = !!f.calls;
+  document.getElementById('tpl-delete-btn').style.display = tplCurrentId ? 'block' : 'none';
+  tplUpdatePreview();
+}
+
+function tplReadForm() {
+  return {
+    name: document.getElementById('tpl-f-name').value.trim() || 'Untitled',
+    subject: document.getElementById('tpl-f-subject').value.trim(),
+    intro: document.getElementById('tpl-f-intro').value.trim(),
+    pos_header: document.getElementById('tpl-f-pos-header').value.trim(),
+    neg_header: document.getElementById('tpl-f-neg-header').value.trim(),
+    closing: document.getElementById('tpl-f-closing').value.trim(),
+    fields: {
+      rev: document.getElementById('tpl-f-rev').checked,
+      rev_delta: document.getElementById('tpl-f-rev-delta').checked,
+      rev_pct: document.getElementById('tpl-f-rev-pct').checked,
+      conv: document.getElementById('tpl-f-conv').checked,
+      margin: document.getElementById('tpl-f-margin').checked,
+      calls: document.getElementById('tpl-f-calls').checked
+    }
+  };
+}
+
+function tplUpdatePreview() {
+  const frame = document.getElementById('tpl-preview-frame');
+  if (!frame) return;
+  const tpl = tplReadForm();
+  // Build sample dA/dB from TPL_SAMPLE
+  const sampleDa = { advs:{ 'Acme Insurance': TPL_SAMPLE.advAccounts[0].a, 'Shield Auto': TPL_SAMPLE.advAccounts[1].a }, pubs:{} };
+  const sampleDb = { advs:{ 'Acme Insurance': TPL_SAMPLE.advAccounts[0].b, 'Shield Auto': TPL_SAMPLE.advAccounts[1].b }, pubs:{} };
+  // Temporarily set digestResults so digestBuildEmailBody can access dA/dB
+  const prev = digestResults;
+  const samplePa = { start:'May 26', end:'Jun 1' };
+  const samplePb = { start:'Jun 2', end:'Jun 8' };
+  digestResults = { dA: sampleDa, dB: sampleDb, pA: samplePa, pB: samplePb };
+  frame.innerHTML = digestBuildEmailBody(TPL_SAMPLE, samplePb, samplePa, tpl);
+  digestResults = prev;
+}
+
+document.addEventListener('input', e => { if (e.target.closest && e.target.closest('#tpl-editor-form')) tplUpdatePreview(); });
+document.addEventListener('change', e => { if (e.target.closest && e.target.closest('#tpl-editor-form')) tplUpdatePreview(); });
+
+async function tplSave() {
+  const data = tplReadForm();
+  const btn = document.getElementById('tpl-save-btn');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  try {
+    if (tplCurrentId) {
+      await sbFetch(`digest_templates?id=eq.${tplCurrentId}`, {
+        method: 'PATCH', headers: { 'Prefer': 'return=minimal' },
+        body: JSON.stringify(data)
+      });
+    } else {
+      const result = await sbFetch('digest_templates', {
+        method: 'POST', headers: { 'Prefer': 'return=representation' },
+        body: JSON.stringify(data)
+      });
+      if (result && result[0]) tplCurrentId = result[0].id;
+    }
+    await tplLoad();
+    if (tplCurrentId) document.getElementById('tpl-delete-btn').style.display = 'block';
+  } catch(e) { alert('Could not save template: ' + e.message); }
+  btn.disabled = false; btn.textContent = 'Save template';
+}
+
+async function tplDelete() {
+  if (!tplCurrentId) return;
+  const t = digestTemplates.find(t => t.id === tplCurrentId);
+  if (!confirm(`Delete template "${t?.name}"?`)) return;
+  try {
+    await sbFetch(`digest_templates?id=eq.${tplCurrentId}`, { method: 'DELETE', headers: { 'Prefer': '' } });
+    tplCurrentId = null;
+    document.getElementById('tpl-editor-empty').style.display = '';
+    document.getElementById('tpl-editor-form').style.display = 'none';
+    await tplLoad();
+  } catch(e) { alert('Could not delete: ' + e.message); }
+}
+
+function digestGetSelectedTemplate(idx) {
+  const sel = document.getElementById('dg-tpl-' + idx);
+  if (!sel || !sel.value) return digestTemplates[0] || null;
+  return digestTemplates.find(t => t.id === sel.value) || null;
+}
+
+function digestSwitchSection(section, el) {
+  document.querySelectorAll('.digest-section-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('digest-section-builder').style.display = section === 'builder' ? '' : 'none';
+  document.getElementById('digest-section-templates').style.display = section === 'templates' ? '' : 'none';
+  if (section === 'templates') tplLoad();
+}
+
 // ─── BOOT ─────────────────────────────────────────────────────────────────────
 async function bootDashboard() {
   document.getElementById('bq-sql').textContent = buildBQSQL();
@@ -2366,7 +2973,8 @@ async function bootDashboard() {
   await Promise.all([loadAliases(), loadAgentsFromSupabase(), loadTestCalls()]);
   loadVerticals();
   populateVerticalDropdowns();
-  teamLoad(); // pre-fetch so digest tab is instant
+  teamLoad();
+  tplLoad(); // pre-fetch so template dropdown on digest cards is populated
   crVisibleCols = {}; CR_COLUMNS.forEach(c => crVisibleCols[c.key] = c.def);
   document.getElementById('cr-colpicker-popover').innerHTML = crBuildColPicker();
   recomputeStats();
