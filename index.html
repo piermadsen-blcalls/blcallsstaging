@@ -421,6 +421,39 @@
   .team-mgr-email { font-size:10px; color:var(--text-3); font-family:var(--mono); margin-top:1px; }
   .team-mgr-count { font-size:10px; font-weight:500; padding:2px 7px; border-radius:100px; background:var(--bg); border:1px solid var(--border-strong); color:var(--text-3); white-space:nowrap; flex-shrink:0; }
   .team-manager-item.active .team-mgr-count { background:var(--brand-mint-bg); border-color:var(--brand-mint); color:var(--brand-navy); }
+  .team-gear-btn { background:none; border:none; cursor:pointer; padding:4px; border-radius:4px; color:var(--text-3); display:flex; align-items:center; justify-content:center; }
+  .team-gear-btn:hover { color:var(--brand-navy); background:var(--bg); }
+  .team-gear-btn.active { color:var(--brand-mint); }
+  .team-alert-badge { font-size:9px; color:var(--brand-navy); background:var(--brand-mint-bg); border-radius:100px; padding:1px 7px; margin-top:3px; display:inline-block; font-weight:500; }
+  .alert-modal-backdrop { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:500; align-items:center; justify-content:center; }
+  .alert-modal-backdrop.open { display:flex; }
+  .alert-modal { background:var(--surface); border-radius:var(--radius); border:1px solid var(--border-strong); width:min(460px,94vw); max-height:90vh; overflow-y:auto; }
+  .alert-modal-header { padding:18px 22px; border-bottom:1px solid var(--border); }
+  .alert-modal-title { font-family:var(--serif); font-size:20px; font-weight:400; }
+  .alert-modal-sub { font-size:12px; color:var(--text-3); margin-top:3px; }
+  .alert-modal-body { padding:18px 22px; display:flex; flex-direction:column; gap:16px; }
+  .alert-field-label { font-size:11px; font-weight:600; letter-spacing:0.4px; text-transform:uppercase; color:var(--text-3); margin-bottom:7px; display:block; }
+  .alert-toggle-row { display:flex; align-items:center; justify-content:space-between; padding:12px 14px; background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-sm); }
+  .alert-toggle-label { font-size:14px; font-weight:500; color:var(--text); }
+  .alert-toggle-desc { font-size:11px; color:var(--text-3); margin-top:2px; }
+  .alert-switch { position:relative; width:40px; height:22px; flex-shrink:0; }
+  .alert-switch input { opacity:0; width:0; height:0; }
+  .alert-switch-slider { position:absolute; inset:0; background:var(--border-strong); border-radius:22px; transition:0.2s; cursor:pointer; }
+  .alert-switch-slider::before { content:''; position:absolute; width:16px; height:16px; left:3px; top:3px; background:white; border-radius:50%; transition:0.2s; }
+  .alert-switch input:checked + .alert-switch-slider { background:var(--brand-mint); }
+  .alert-switch input:checked + .alert-switch-slider::before { transform:translateX(18px); }
+  .alert-config { display:flex; flex-direction:column; gap:16px; }
+  .alert-config.disabled { opacity:0.4; pointer-events:none; }
+  .alert-input, .alert-select { width:100%; font-family:var(--sans); font-size:13px; padding:8px 10px; border:1px solid var(--border-strong); border-radius:var(--radius-sm); background:var(--bg); color:var(--text); outline:none; }
+  .alert-select { appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23999' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 10px center; padding-right:28px; }
+  .alert-row-2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .alert-inline { display:flex; align-items:center; gap:8px; }
+  .alert-inline .alert-input { width:80px; }
+  .alert-unit { font-size:12px; color:var(--text-3); }
+  .alert-modal-footer { display:flex; justify-content:space-between; gap:8px; padding:16px 22px; border-top:1px solid var(--border); align-items:center; }
+  .alert-save-btn { font-family:var(--sans); font-size:13px; font-weight:500; padding:8px 18px; border-radius:var(--radius-sm); background:var(--brand-navy); color:white; border:none; cursor:pointer; }
+  .alert-cancel-btn { font-family:var(--sans); font-size:13px; padding:8px 14px; border-radius:var(--radius-sm); background:none; color:var(--text-2); border:1px solid var(--border-strong); cursor:pointer; }
+  .alert-last-sent { font-size:11px; color:var(--text-3); }
   .team-sidebar-empty { padding:24px 16px; text-align:center; font-size:12px; color:var(--text-3); font-style:italic; }
   .team-mgr-form { padding:12px 14px; border-top:1px solid var(--border); background:var(--bg); display:none; }
   .team-mgr-form.open { display:block; }
@@ -961,6 +994,83 @@
         <button class="digest-preview-close" onclick="digestClosePreview()">Close ×</button>
       </div>
       <div class="digest-email-body" id="dg-preview-body"></div>
+    </div>
+  </div>
+
+  <!-- MANAGER ALERT SETTINGS MODAL -->
+  <div class="alert-modal-backdrop" id="alert-modal">
+    <div class="alert-modal">
+      <div class="alert-modal-header">
+        <div class="alert-modal-title" id="alert-modal-title">Alert settings</div>
+        <div class="alert-modal-sub" id="alert-modal-sub"></div>
+      </div>
+      <div class="alert-modal-body">
+        <div class="alert-toggle-row">
+          <div>
+            <div class="alert-toggle-label">Automatic performance alerts</div>
+            <div class="alert-toggle-desc">Send this manager scheduled email alerts</div>
+          </div>
+          <label class="alert-switch">
+            <input type="checkbox" id="alert-enabled" onchange="alertToggleConfig()">
+            <span class="alert-switch-slider"></span>
+          </label>
+        </div>
+
+        <div class="alert-config" id="alert-config">
+          <div>
+            <label class="alert-field-label">Frequency</label>
+            <div class="alert-row-2">
+              <select class="alert-select" id="alert-frequency" onchange="alertFreqChange()">
+                <option value="weekly">Weekly</option>
+                <option value="biweekly">Every 2 weeks</option>
+                <option value="monthly">Monthly</option>
+              </select>
+              <select class="alert-select" id="alert-day-week">
+                <option value="1">Mondays</option>
+                <option value="2">Tuesdays</option>
+                <option value="3">Wednesdays</option>
+                <option value="4">Thursdays</option>
+                <option value="5">Fridays</option>
+                <option value="6">Saturdays</option>
+                <option value="0">Sundays</option>
+              </select>
+              <select class="alert-select" id="alert-day-month" style="display:none">
+                ${Array.from({length:28},(_,i)=>`<option value="${i+1}">Day ${i+1}</option>`).join('')}
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="alert-field-label">Comparison window</label>
+            <div class="alert-inline">
+              <span class="alert-unit">Compare last</span>
+              <input class="alert-input" type="number" id="alert-lookback" value="7" min="1" max="90">
+              <span class="alert-unit">days vs the prior same period</span>
+            </div>
+          </div>
+
+          <div>
+            <label class="alert-field-label">Movement threshold</label>
+            <div class="alert-inline">
+              <span class="alert-unit">Flag accounts with revenue change ≥</span>
+              <input class="alert-input" type="number" id="alert-threshold" value="15" min="0" max="100">
+              <span class="alert-unit">%</span>
+            </div>
+          </div>
+
+          <div>
+            <label class="alert-field-label">Email template</label>
+            <select class="alert-select" id="alert-template"></select>
+          </div>
+        </div>
+      </div>
+      <div class="alert-modal-footer">
+        <span class="alert-last-sent" id="alert-last-sent"></span>
+        <div style="display:flex;gap:8px">
+          <button class="alert-cancel-btn" onclick="alertCloseModal()">Cancel</button>
+          <button class="alert-save-btn" id="alert-save-btn" onclick="alertSaveSettings()">Save</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1980,6 +2090,7 @@ const WEBHOOK_URL = 'https://services.leadconnectorhq.com/hooks/L3tawCZ2vbExyCRL
 // State: managers list + assignments map + known account names
 let teamManagers = [];          // [{id, manager_name, manager_email}]
 let teamAssignments = {};       // account_name+type -> manager_id  e.g. "Acme|advertiser" -> uuid
+let teamAlertSettings = {};     // manager_id -> alert settings row
 let teamAdvNames = [];          // distinct advertiser names from agent_calls_raw
 let teamPubNames = [];          // distinct publisher names from agent_calls_raw
 let teamLoaded = false;
@@ -1995,12 +2106,13 @@ function teamMgrForAccount(name, type) {
 async function teamLoad(force=false) {
   if (teamLoaded && !force) return;
   try {
-    // Fetch managers, assignments, and distinct account names in parallel
-    const [mgrs, assignments, advRows, pubRows] = await Promise.all([
+    // Fetch managers, assignments, account names, and alert settings in parallel
+    const [mgrs, assignments, advRows, pubRows, alertRows] = await Promise.all([
       sbFetch('account_managers?select=*&order=manager_name.asc'),
       sbFetch('account_manager_assignments?select=*'),
       sbFetch('agent_calls_raw?select=advertiser_name&advertiser_name=not.is.null'),
-      sbFetch('agent_calls_raw?select=publisher_name&publisher_name=not.is.null')
+      sbFetch('agent_calls_raw?select=publisher_name&publisher_name=not.is.null'),
+      sbFetch('manager_alert_settings?select=*').catch(() => [])
     ]);
 
     teamManagers = mgrs || [];
@@ -2010,6 +2122,10 @@ async function teamLoad(force=false) {
     (assignments || []).forEach(a => {
       teamAssignments[a.account_name + '|' + a.account_type] = a.manager_id;
     });
+
+    // Build alert settings lookup (manager_id -> settings)
+    teamAlertSettings = {};
+    (alertRows || []).forEach(s => { teamAlertSettings[s.manager_id] = s; });
 
     // Distinct account names
     const advSet = new Set(), pubSet = new Set();
@@ -2038,12 +2154,21 @@ function teamRenderSidebar() {
     const advCount = teamAdvForMgr(m.id).length;
     const pubCount = teamPubForMgr(m.id).length;
     const total = advCount + pubCount;
-    return `<div class="team-manager-item" onclick="teamEditMgr('${m.id}')">
-      <div style="min-width:0">
+    const s = teamAlertSettings[m.id];
+    const alertOn = s && s.enabled;
+    const freqLabel = alertOn ? (s.frequency === 'weekly' ? 'Weekly' : s.frequency === 'biweekly' ? 'Biweekly' : 'Monthly') : '';
+    return `<div class="team-manager-item">
+      <div style="min-width:0;flex:1;cursor:pointer" onclick="teamEditMgr('${m.id}')">
         <div class="team-mgr-name">${m.manager_name}</div>
         <div class="team-mgr-email">${m.manager_email}</div>
+        ${alertOn ? `<div class="team-alert-badge">⏱ ${freqLabel} alerts on</div>` : ''}
       </div>
-      <div class="team-mgr-count">${total} acct${total!==1?'s':''}</div>
+      <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+        <span class="team-mgr-count">${total} acct${total!==1?'s':''}</span>
+        <button class="team-gear-btn${alertOn?' active':''}" title="Alert settings" onclick="event.stopPropagation();alertOpenModal('${m.id}')">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" stroke="currentColor" stroke-width="1.3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M3.05 12.95l1.4-1.4M11.55 4.45l1.4-1.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
+      </div>
     </div>`;
   }).join('');
 }
@@ -2205,14 +2330,102 @@ async function teamDeleteMgr() {
   if (!mgr) return;
   if (!confirm(`Delete manager "${mgr.manager_name}"? Their account assignments will also be removed.`)) return;
   try {
-    // Delete assignments first, then manager
+    // Delete assignments + alert settings first, then manager
     await sbFetch(`account_manager_assignments?manager_id=eq.${id}`, { method: 'DELETE', headers: { 'Prefer': '' } });
+    await sbFetch(`manager_alert_settings?manager_id=eq.${id}`, { method: 'DELETE', headers: { 'Prefer': '' } }).catch(()=>{});
     await sbFetch(`account_managers?id=eq.${id}`, { method: 'DELETE', headers: { 'Prefer': '' } });
     teamHideMgrForm();
     teamLoaded = false;
     await teamLoad(true);
   } catch(e) { alert('Could not delete: ' + e.message); }
 }
+
+// ─── MANAGER ALERT SETTINGS ───────────────────────────────────────────────────
+let alertCurrentMgrId = null;
+
+function alertOpenModal(mgrId) {
+  alertCurrentMgrId = mgrId;
+  const mgr = teamManagers.find(m => m.id === mgrId);
+  if (!mgr) return;
+  const s = teamAlertSettings[mgrId] || {};
+
+  document.getElementById('alert-modal-title').textContent = 'Alert settings';
+  document.getElementById('alert-modal-sub').textContent = `${mgr.manager_name} · ${mgr.manager_email}`;
+
+  document.getElementById('alert-enabled').checked = !!s.enabled;
+  document.getElementById('alert-frequency').value = s.frequency || 'weekly';
+  document.getElementById('alert-day-week').value = s.day_of_week != null ? s.day_of_week : 1;
+  document.getElementById('alert-day-month').value = s.day_of_month || 1;
+  document.getElementById('alert-lookback').value = s.lookback_days || 7;
+  document.getElementById('alert-threshold').value = s.thr_value != null ? s.thr_value : 15;
+
+  // Populate template dropdown
+  const tplSel = document.getElementById('alert-template');
+  tplSel.innerHTML = '<option value="">Default template</option>' +
+    digestTemplates.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+  tplSel.value = s.template_id || '';
+
+  // Last sent
+  const ls = document.getElementById('alert-last-sent');
+  ls.textContent = s.last_sent_at ? 'Last sent ' + new Date(s.last_sent_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : 'Never sent';
+
+  alertFreqChange();
+  alertToggleConfig();
+  document.getElementById('alert-modal').classList.add('open');
+}
+
+function alertCloseModal() {
+  document.getElementById('alert-modal').classList.remove('open');
+  alertCurrentMgrId = null;
+}
+
+function alertToggleConfig() {
+  const on = document.getElementById('alert-enabled').checked;
+  document.getElementById('alert-config').className = 'alert-config' + (on ? '' : ' disabled');
+}
+
+function alertFreqChange() {
+  const freq = document.getElementById('alert-frequency').value;
+  const isMonthly = freq === 'monthly';
+  document.getElementById('alert-day-week').style.display = isMonthly ? 'none' : '';
+  document.getElementById('alert-day-month').style.display = isMonthly ? '' : 'none';
+}
+
+async function alertSaveSettings() {
+  if (!alertCurrentMgrId) return;
+  const btn = document.getElementById('alert-save-btn');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  const payload = {
+    manager_id: alertCurrentMgrId,
+    enabled: document.getElementById('alert-enabled').checked,
+    mode: 'scheduled',
+    frequency: document.getElementById('alert-frequency').value,
+    day_of_week: parseInt(document.getElementById('alert-day-week').value),
+    day_of_month: parseInt(document.getElementById('alert-day-month').value),
+    lookback_days: parseInt(document.getElementById('alert-lookback').value) || 7,
+    thr_value: parseFloat(document.getElementById('alert-threshold').value) || 0,
+    template_id: document.getElementById('alert-template').value || null
+  };
+  try {
+    await sbFetch('manager_alert_settings?on_conflict=manager_id', {
+      method: 'POST',
+      headers: { 'Prefer': 'resolution=merge-duplicates' },
+      body: JSON.stringify(payload)
+    });
+    teamAlertSettings[alertCurrentMgrId] = { ...teamAlertSettings[alertCurrentMgrId], ...payload };
+    alertCloseModal();
+    teamRenderSidebar();
+  } catch(e) {
+    alert('Could not save alert settings: ' + e.message);
+  }
+  btn.disabled = false; btn.textContent = 'Save';
+}
+
+// close alert modal on backdrop click
+document.addEventListener('click', e => {
+  const modal = document.getElementById('alert-modal');
+  if (modal && e.target === modal) alertCloseModal();
+});
 
 // ─── WEEKLY DIGEST ────────────────────────────────────────────────────────────
 let digestResults = null;
