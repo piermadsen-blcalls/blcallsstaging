@@ -47,6 +47,8 @@
   .nav-tab { font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--text-2); background: none; border: none; padding: 12px 20px; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.15s; }
   .nav-tab.active { color: var(--brand-navy); border-bottom-color: var(--brand-mint); }
   .nav-tab:hover:not(.active) { color: var(--text); }
+  .admin-tab { display: none; }
+  body.admin-mode .admin-tab { display: inline-block; }
   .tab-pane { display: none; }
   .tab-pane.active { display: block; }
 
@@ -578,9 +580,9 @@
     <button class="nav-tab active" onclick="switchTab('agents',this)">Agents</button>
     <button class="nav-tab" onclick="switchTab('insights',this)">Insights</button>
     <button class="nav-tab" onclick="switchTab('reporting',this)">Call Reporting</button>
-    <button class="nav-tab" onclick="switchTab('team',this)">Team</button>
-    <button class="nav-tab" onclick="switchTab('digest',this)">Weekly Digest</button>
-    <button class="nav-tab" onclick="switchTab('dev',this)">In development</button>
+    <button class="nav-tab admin-tab" onclick="switchTab('team',this)">Team</button>
+    <button class="nav-tab admin-tab" onclick="switchTab('digest',this)">Weekly Recap</button>
+    <button class="nav-tab admin-tab" onclick="switchTab('dev',this)">In development</button>
   </div>
 
   <!-- AGENTS TAB -->
@@ -805,7 +807,7 @@
 
     <!-- SECTION TOGGLE -->
     <div class="digest-section-tabs">
-      <button class="digest-section-tab active" onclick="digestSwitchSection('builder', this)">Digest builder</button>
+      <button class="digest-section-tab active" onclick="digestSwitchSection('builder', this)">Recap builder</button>
       <button class="digest-section-tab" onclick="digestSwitchSection('templates', this)">Email templates</button>
     </div>
 
@@ -840,10 +842,10 @@
             <span class="digest-unit">pp</span>
           </div>
         </div>
-        <button class="digest-run-btn" id="dg-run-btn" onclick="digestRun()">Build digest</button>
+        <button class="digest-run-btn" id="dg-run-btn" onclick="digestRun()">Build recap</button>
       </div>
       <div id="dg-output">
-        <div class="ins-loading">Configure thresholds above and click <strong>Build digest</strong>.</div>
+        <div class="ins-loading">Configure thresholds above and click <strong>Build recap</strong>.</div>
       </div>
     </div>
 
@@ -2245,7 +2247,7 @@ async function digestRun() {
   } catch(e) {
     document.getElementById('dg-output').innerHTML = `<div class="ins-loading" style="color:var(--coral)">Error: ${e.message}</div>`;
   }
-  btn.disabled = false; btn.textContent = 'Build digest';
+  btn.disabled = false; btn.textContent = 'Build recap';
 }
 
 // Fetch full publisher→agent→advertiser tuples for digest
@@ -2320,7 +2322,7 @@ function digestRenderOutput({ dA, dB, pA, pB, thrCalls, thrRevPct, thrConvPp }) 
   let html = `<div class="digest-header-row">
     <div class="digest-summary-label"><strong>${totalFlags}</strong> account${totalFlags !== 1 ? 's' : ''} flagged · <strong>${totalEmails}</strong> email${totalEmails !== 1 ? 's' : ''} to send · period: ${periodLabel}</div>
     <div style="display:flex;gap:8px">
-      ${totalEmails > 0 ? `<button class="digest-send-all-btn" onclick="digestSendAll()">Send all ${totalEmails} digests ↑</button>` : ''}
+      ${totalEmails > 0 ? `<button class="digest-send-all-btn" onclick="digestSendAll()">Send all ${totalEmails} recap${totalEmails!==1?'s':''} ↑</button>` : ''}
     </div>
   </div>`;
 
@@ -2628,7 +2630,7 @@ function digestBuildEmailBody(entry, pA, pB, tpl) {
 
   const posHeader = tpl?.pos_header || '📈 Movers up';
   const negHeader = tpl?.neg_header || '📉 Movers down';
-  const closing = tpl?.closing || 'This digest was generated automatically from the Buyerlink Calls AI Agent Registry. Reach out to your account manager with any questions.';
+  const closing = tpl?.closing || 'This recap was generated automatically from the Buyerlink Calls AI Agent Registry. Reach out to your account manager with any questions.';
 
   function fillPlaceholders(str) {
     return (str||'')
@@ -2638,13 +2640,13 @@ function digestBuildEmailBody(entry, pA, pB, tpl) {
       .replace(/\{\{account_count\}\}/g, allAccounts.length);
   }
 
-  const subject = fillPlaceholders(tpl?.subject || 'Weekly AI Performance Digest — {{period}}');
+  const subject = fillPlaceholders(tpl?.subject || 'Weekly AI Performance Recap — {{period}}');
   const intro = fillPlaceholders(tpl?.intro || `Hi {{first_name}}, here's a summary of notable performance movement across your AI-routed accounts ({{period}}). {{account_count}} account${allAccounts.length!==1?'s':''} moved this period.`);
 
   const dA = digestResults?.dA || { advs:{}, pubs:{} };
   const dB = digestResults?.dB || { advs:{}, pubs:{} };
-  const ups = allAccounts.filter(m => m.dRev >= 0);
-  const downs = allAccounts.filter(m => m.dRev < 0);
+  const ups = allAccounts.filter(m => m.dRev >= 0).sort((a, b) => b.dRev - a.dRev);     // biggest gain first
+  const downs = allAccounts.filter(m => m.dRev < 0).sort((a, b) => a.dRev - b.dRev);    // biggest loss first
   const link = digestManagerLink(entry);
 
   let body = `<h2>${subject}</h2><div class="email-sub">Period: ${periodLabel} · Buyerlink Calls AI Agent Registry</div>`;
@@ -2803,7 +2805,7 @@ async function digestFireWebhook(entry, pA, pB, tpl) {
   const payload = {
     to_email: entry.email,
     to_name: entry.managerName,
-    subject: fillPlaceholders(tpl?.subject || 'Weekly AI Performance Digest — {{period}}'),
+    subject: fillPlaceholders(tpl?.subject || 'Weekly AI Performance Recap — {{period}}'),
     template_name: tpl?.name || 'Default',
     period_a: pA,
     period_b: pB,
@@ -2854,7 +2856,7 @@ const TPL_DEFAULTS = {
   intro: 'Hi {{first_name}},\n\nHere\'s your weekly performance summary for your AI-routed accounts ({{period}}). {{account_count}} accounts moved this period.',
   pos_header: '📈 Movers up',
   neg_header: '📉 Movers down',
-  closing: 'This digest was generated automatically from the Buyerlink Calls AI Agent Registry. Reach out to your account manager with any questions.',
+  closing: 'This recap was generated automatically from the Buyerlink Calls AI Agent Registry. Reach out to your account manager with any questions.',
   fields: { rev:true, rev_delta:true, rev_pct:true, conv:true, margin:false, calls:false }
 };
 
@@ -3080,8 +3082,23 @@ async function applyManagerView(email, days) {
   runInsights();
 }
 
+// ─── ADMIN MODE (hidden tabs) ─────────────────────────────────────────────────
+function applyAdminMode() {
+  const isAdmin = /(^|&|#)admin(\b|=|&|$)/.test(location.hash);
+  document.body.classList.toggle('admin-mode', isAdmin);
+  // If admin mode is off but an admin tab is currently active, fall back to Agents
+  if (!isAdmin) {
+    const activeAdminTab = document.querySelector('.nav-tab.admin-tab.active');
+    if (activeAdminTab) {
+      const agentsBtn = document.querySelector('.nav-tab');
+      if (agentsBtn) switchTab('agents', agentsBtn);
+    }
+  }
+}
+
 // ─── BOOT ─────────────────────────────────────────────────────────────────────
 async function bootDashboard() {
+  applyAdminMode();
   document.getElementById('bq-sql').textContent = buildBQSQL();
   setupFileUpload();
   agentDrpInit();
@@ -3102,7 +3119,11 @@ async function bootDashboard() {
   if (mv && mv.email) applyManagerView(mv.email, mv.period);
 }
 bootDashboard();
-window.addEventListener('hashchange', () => { const mv = parseManagerHash(); if (mv && mv.email) applyManagerView(mv.email, mv.period); });
+window.addEventListener('hashchange', () => {
+  applyAdminMode();
+  const mv = parseManagerHash();
+  if (mv && mv.email) applyManagerView(mv.email, mv.period);
+});
 </script>
 </body>
 </html>
