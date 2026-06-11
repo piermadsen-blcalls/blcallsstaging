@@ -2649,25 +2649,25 @@ function digestBuildEmailBody(entry, pA, pB, tpl) {
   const downs = allAccounts.filter(m => m.dRev < 0).sort((a, b) => a.dRev - b.dRev);    // biggest loss first
   const link = digestManagerLink(entry);
 
-  let body = `<h2>${subject}</h2><div class="email-sub">Period: ${periodLabel} · Buyerlink Calls AI Agent Registry</div>`;
-  body += `<div class="email-section"><div style="font-size:13px;color:#6B6760;line-height:1.7">${intro}</div></div>`;
+  let body = `<h2 style="margin-bottom:16px">${subject}</h2>`;
+  body += `<div class="email-section"><div style="font-size:13px;color:#6B6760;line-height:1.7;margin-bottom:24px">${intro}</div></div>`;
 
   if (layout === 'full') {
     // ── FULL FUNNEL (legacy) ──
-    if (ups.length) {
-      body += `<div class="email-section"><div class="email-section-title">${posHeader} (${ups.length})</div>`;
-      body += ups.map(m => digestRenderFunnelCard(m, dA, dB, true, pA, pB)).join('');
-      body += `</div>`;
-    }
     if (downs.length) {
       body += `<div class="email-section"><div class="email-section-title">${negHeader} (${downs.length})</div>`;
       body += downs.map(m => digestRenderFunnelCard(m, dA, dB, true, pA, pB)).join('');
       body += `</div>`;
     }
+    if (ups.length) {
+      body += `<div class="email-section"><div class="email-section-title">${posHeader} (${ups.length})</div>`;
+      body += ups.map(m => digestRenderFunnelCard(m, dA, dB, true, pA, pB)).join('');
+      body += `</div>`;
+    }
   } else {
-    // ── COMPACT SUMMARY (default) ──
-    body += digestCompactGroup(posHeader, ups, '#0F6E56', '▲');
+    // ── COMPACT SUMMARY (default) — movers down first, then up ──
     body += digestCompactGroup(negHeader, downs, '#993C1D', '▼');
+    body += digestCompactGroup(posHeader, ups, '#0F6E56', '▲');
     // CTA button
     body += `<div class="email-section" style="text-align:center;margin-top:24px">
       <a href="${link}" style="display:inline-block;font-family:Arial,sans-serif;font-size:13px;font-weight:600;color:#FFFFFF;background:#1A2E4A;text-decoration:none;padding:11px 24px;border-radius:6px">View full breakdown →</a>
