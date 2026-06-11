@@ -840,13 +840,21 @@
 
     <!-- SECTION TOGGLE -->
     <div class="digest-section-tabs">
-      <button class="digest-section-tab active" onclick="digestSwitchSection('builder', this)">Recap builder</button>
+      <button class="digest-section-tab active" onclick="digestSwitchSection('builder', this)">Custom report</button>
       <button class="digest-section-tab" onclick="digestSwitchSection('templates', this)">Email templates</button>
     </div>
 
     <!-- ── BUILDER SECTION ── -->
     <div id="digest-section-builder">
       <div class="digest-config">
+        <div class="digest-config-group">
+          <div class="digest-config-label">Recipients</div>
+          <div class="digest-config-inner">
+            <select class="cr-select" id="dg-recipients" style="min-width:150px">
+              <option value="all">All managers</option>
+            </select>
+          </div>
+        </div>
         <div class="digest-config-group">
           <div class="digest-config-label">Comparison window</div>
           <div class="digest-config-inner">
@@ -875,10 +883,26 @@
             <span class="digest-unit">pp</span>
           </div>
         </div>
-        <button class="digest-run-btn" id="dg-run-btn" onclick="digestRun()">Build recap</button>
+        <div class="digest-config-group">
+          <div class="digest-config-label">Template</div>
+          <div class="digest-config-inner">
+            <select class="cr-select" id="dg-global-template" style="min-width:140px"></select>
+          </div>
+        </div>
+        <div class="digest-config-group">
+          <div class="digest-config-label">Layout</div>
+          <div class="digest-config-inner">
+            <select class="cr-select" id="dg-global-layout" style="min-width:150px">
+              <option value="">Use template's layout</option>
+              <option value="compact">Compact summary</option>
+              <option value="full">Full funnel</option>
+            </select>
+          </div>
+        </div>
+        <button class="digest-run-btn" id="dg-run-btn" onclick="digestRun()">Build report</button>
       </div>
       <div id="dg-output">
-        <div class="ins-loading">Configure thresholds above and click <strong>Build recap</strong>.</div>
+        <div class="ins-loading">Choose recipients and settings above, then click <strong>Build report</strong>.</div>
       </div>
     </div>
 
@@ -1260,6 +1284,7 @@ function switchTab(id, el) {
   if (id === 'dev') devLoadIvrs();
   if (id === 'reporting') crAutoLoad();
   if (id === 'team') teamLoad();
+  if (id === 'digest') digestPopulateBuilderControls();
 }
 
 // ─── ALIAS TABLE ──────────────────────────────────────────────────────────────
@@ -2460,7 +2485,7 @@ async function digestRun() {
   } catch(e) {
     document.getElementById('dg-output').innerHTML = `<div class="ins-loading" style="color:var(--coral)">Error: ${e.message}</div>`;
   }
-  btn.disabled = false; btn.textContent = 'Build recap';
+  btn.disabled = false; btn.textContent = 'Build report';
 }
 
 // Fetch full publisher→agent→advertiser tuples for digest
@@ -2525,7 +2550,13 @@ function digestRenderOutput({ dA, dB, pA, pB, thrCalls, thrRevPct, thrConvPp }) 
   for (const m of advMovers) { const mgr = teamMgrForAccount(m.key, 'advertiser'); if (mgr) { ensureEmail(mgr); byEmail[mgr.manager_email].advAccounts.push(m); } }
   for (const m of pubMovers) { const mgr = teamMgrForAccount(m.key, 'publisher'); if (mgr) { ensureEmail(mgr); byEmail[mgr.manager_email].pubAccounts.push(m); } }
 
-  const emailList = Object.values(byEmail);
+  // Apply recipient filter (specific manager vs all)
+  const recId = document.getElementById('dg-recipients')?.value || 'all';
+  let emailList = Object.values(byEmail);
+  if (recId !== 'all') {
+    const mgr = teamManagers.find(m => m.id === recId);
+    emailList = mgr ? emailList.filter(e => e.email === mgr.manager_email) : [];
+  }
   const unmatchedAdv = advMovers.filter(m => !teamMgrForAccount(m.key, 'advertiser'));
   const unmatchedPub = pubMovers.filter(m => !teamMgrForAccount(m.key, 'publisher'));
   const totalFlags = advMovers.length + pubMovers.length;
@@ -2535,7 +2566,7 @@ function digestRenderOutput({ dA, dB, pA, pB, thrCalls, thrRevPct, thrConvPp }) 
   let html = `<div class="digest-header-row">
     <div class="digest-summary-label"><strong>${totalFlags}</strong> account${totalFlags !== 1 ? 's' : ''} flagged · <strong>${totalEmails}</strong> email${totalEmails !== 1 ? 's' : ''} to send · period: ${periodLabel}</div>
     <div style="display:flex;gap:8px">
-      ${totalEmails > 0 ? `<button class="digest-send-all-btn" onclick="digestSendAll()">Send all ${totalEmails} recap${totalEmails!==1?'s':''} ↑</button>` : ''}
+      ${totalEmails > 0 ? `<button class="digest-send-all-btn" onclick="digestSendAll()">Send all ${totalEmails} report${totalEmails!==1?'s':''} ↑</button>` : ''}
     </div>
   </div>`;
 
@@ -2594,9 +2625,6 @@ function digestRenderCard(entry, idx, pA, pB, dA, dB) {
     ...entry.pubAccounts.map(m => ({ ...m, anchorType: 'publisher' }))
   ];
 
-  const tplDefaultOpt = `<option value="">— Default template —</option>`;
-  const tplOpts = digestTemplates.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
-
   const funnelCards = allAccounts.map(m => digestRenderFunnelCard(m, dA, dB, false, pA, pB)).join('');
 
   return `<div class="digest-card" id="dg-card-${idx}">
@@ -2607,9 +2635,6 @@ function digestRenderCard(entry, idx, pA, pB, dA, dB) {
         <div class="digest-card-meta">${allAccounts.length} account${allAccounts.length!==1?'s':''} flagged</div>
       </div>
       <div class="digest-card-actions">
-        <select class="cr-select" id="dg-tpl-${idx}" style="font-size:12px" title="Choose email template">
-          ${tplDefaultOpt}${tplOpts}
-        </select>
         <button class="digest-preview-btn" onclick="digestPreview(${idx})">Preview</button>
         <button class="digest-send-btn" id="dg-send-${idx}" onclick="digestSendOne(${idx})">
           <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M2 8l12-6-5 14-2-5-5-3z" stroke="white" stroke-width="1.4" stroke-linejoin="round"/></svg>
@@ -2962,7 +2987,14 @@ function digestGetEmailList(results) {
   function ensure(mgr) { if (!byEmail[mgr.manager_email]) byEmail[mgr.manager_email] = { managerName: mgr.manager_name, email: mgr.manager_email, advAccounts: [], pubAccounts: [] }; }
   for (const m of advMovers) { const mgr = teamMgrForAccount(m.key, 'advertiser'); if (mgr) { ensure(mgr); byEmail[mgr.manager_email].advAccounts.push(m); } }
   for (const m of pubMovers) { const mgr = teamMgrForAccount(m.key, 'publisher'); if (mgr) { ensure(mgr); byEmail[mgr.manager_email].pubAccounts.push(m); } }
-  return Object.values(byEmail);
+  // Apply recipient filter so indices match the rendered cards
+  const recId = document.getElementById('dg-recipients')?.value || 'all';
+  let list = Object.values(byEmail);
+  if (recId !== 'all') {
+    const mgr = teamManagers.find(m => m.id === recId);
+    list = mgr ? list.filter(e => e.email === mgr.manager_email) : [];
+  }
+  return list;
 }
 
 async function digestSendOne(idx) {
@@ -3236,10 +3268,42 @@ async function tplDelete() {
   } catch(e) { alert('Could not delete: ' + e.message); }
 }
 
+// Resolve the template chosen in the global builder dropdown (applies to all sends)
 function digestGetSelectedTemplate(idx) {
-  const sel = document.getElementById('dg-tpl-' + idx);
-  if (!sel || !sel.value) return digestTemplates[0] || null;
-  return digestTemplates.find(t => t.id === sel.value) || null;
+  const sel = document.getElementById('dg-global-template');
+  if (sel && sel.value) {
+    const t = digestTemplates.find(t => t.id === sel.value);
+    if (t) return digestApplyLayoutOverride(t);
+  }
+  // fall back to first template
+  return digestApplyLayoutOverride(digestTemplates[0] || null);
+}
+
+// Apply the global layout override (if set) on top of a template
+function digestApplyLayoutOverride(tpl) {
+  const layoutSel = document.getElementById('dg-global-layout');
+  const override = layoutSel ? layoutSel.value : '';
+  if (!override) return tpl; // use template's own layout
+  return { ...(tpl || {}), layout: override };
+}
+
+// Populate recipient + template dropdowns in the builder
+async function digestPopulateBuilderControls() {
+  await teamLoad();
+  const recSel = document.getElementById('dg-recipients');
+  if (recSel) {
+    const cur = recSel.value;
+    recSel.innerHTML = '<option value="all">All managers</option>' +
+      teamManagers.map(m => `<option value="${m.id}">${m.manager_name}</option>`).join('');
+    if (cur) recSel.value = cur;
+  }
+  const tplSel = document.getElementById('dg-global-template');
+  if (tplSel) {
+    const cur = tplSel.value;
+    tplSel.innerHTML = '<option value="">Default template</option>' +
+      digestTemplates.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+    if (cur) tplSel.value = cur;
+  }
 }
 
 function digestSwitchSection(section, el) {
@@ -3248,6 +3312,7 @@ function digestSwitchSection(section, el) {
   document.getElementById('digest-section-builder').style.display = section === 'builder' ? '' : 'none';
   document.getElementById('digest-section-templates').style.display = section === 'templates' ? '' : 'none';
   if (section === 'templates') tplLoad();
+  if (section === 'builder') digestPopulateBuilderControls();
 }
 
 // ─── MANAGER FILTERED VIEW (shareable link) ───────────────────────────────────
